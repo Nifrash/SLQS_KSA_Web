@@ -1,0 +1,26 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}My Digital Membership Card | SLQS Saudi Arabia{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}"><link rel="stylesheet" href="{% static 'css/member_dashboard.css' %}"><link rel="stylesheet" href="{% static 'css/digital_cards.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-member-workspace"><div class="container slqs-member-frame">
+  {% include 'member_accounts/_portal_sidebar.html' with portal_section='digital_card' %}
+  <div class="slqs-member-main">
+    <div class="slqs-member-topbar"><div><span class="slqs-member-breadcrumb">Member portal / Membership card</span><h1>My digital card</h1></div><a class="slqs-member-topbar-profile" href="{% url 'member_accounts:dashboard' %}">Back to overview ↗</a></div>
+    <div class="slqs-card-page-intro"><span class="slqs-member-section-kicker">SLQS KSA · VERIFIED MEMBERSHIP</span><h2>Your professional membership, in one place.</h2><p>Present your card at SLQS programmes and scan the QR code to verify its current status online.</p></div>
+    {% if member %}
+      <div class="slqs-id-card" role="region" aria-label="SLQS digital membership card">
+        <div class="slqs-id-card-top"><span class="slqs-id-brand">SLQS<span>.</span></span><span>SRI LANKAN QUANTITY SURVEYORS<br>SAUDI ARABIA</span></div>
+        <div class="slqs-id-divider"></div>
+        <div class="slqs-id-content"><div class="slqs-id-info"><div class="slqs-id-label">DIGITAL MEMBERSHIP CARD</div><h2>{{ member.application.full_name }}</h2><p>{{ member.application.job_title }}</p><strong>{{ member.membership_number }}</strong><dl><div><dt>Joined</dt><dd>{{ member.joined_on|date:'d M Y' }}</dd></div><div><dt>Renewal due</dt><dd>{% if member.renewal_due_on %}{{ member.renewal_due_on|date:'d M Y' }}{% else %}Not assigned{% endif %}</dd></div></dl></div>
+        {% if account.profile_photo %}<div class="slqs-id-photo"><img src="{{ account.profile_photo.url }}" alt="Member profile photograph" loading="lazy" width="72" height="85"></div>{% endif %}
+        <div class="slqs-id-code">{% if valid %}<img src="{% url 'digital_cards:my_qr' %}" width="144" height="144" alt="QR code for live membership verification"><span>SCAN TO VERIFY</span>{% else %}<div class="slqs-qr-disabled" aria-hidden="true">×</div><span>NOT CURRENTLY VALID</span>{% endif %}</div></div>
+      </div>
+      <div class="slqs-card-status {% if valid %}is-valid{% else %}is-invalid{% endif %}" role="status"><span aria-hidden="true">{% if valid %}✓{% else %}!{% endif %}</span><div><strong>{% if valid %}Active, verifiable card{% else %}Card not currently valid{% endif %}</strong><p>{{ reason }}</p></div></div>
+      <div class="slqs-card-actions">{% if valid %}<a class="slqs-card-download" href="{% url 'digital_cards:my_pdf' %}">↓ Download membership card (PDF)</a>{% endif %}<a class="slqs-card-secondary" href="{% url 'member_accounts:profile' %}">Manage my profile</a></div>
+      <p class="slqs-card-privacy">QR verification checks SLQS's live membership record. Suspended, revoked, inactive or overdue memberships will not verify as active, even if an older PDF or screenshot still exists.</p>
+    {% else %}
+      <section class="slqs-member-card slqs-card-waiting"><span class="slqs-member-section-kicker">MEMBERSHIP APPROVAL REQUIRED</span><h2>Digital cards are available after approval.</h2><p>{{ reason }}</p><a class="slqs-card-download" href="{% url 'member_accounts:dashboard' %}">View my membership application →</a></section>
+    {% endif %}
+  </div>
+</div></div>
+{% endblock %}

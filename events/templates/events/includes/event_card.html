@@ -1,0 +1,14 @@
+{% load wagtailimages_tags %}
+<article class="slqs-event-card">
+  <a href="{{ event.url }}" class="slqs-event-card-image" aria-label="View {{ event.title }}">
+    {% if event.cover_image %}{% image event.cover_image fill-720x450 as photo %}<img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ event.cover_image.title }}" loading="lazy">
+    {% else %}<div class="slqs-event-art" aria-hidden="true"><span>SLQS</span><strong>IDEAS<br>IN MOTION.</strong><span class="slqs-event-art-mark">↗</span></div>{% endif %}
+  </a>
+  <div class="slqs-event-card-body">
+    <div class="slqs-event-eyebrow"><span>{{ event.get_kind_display }}</span><span class="slqs-event-status {% if event.status == 'CANCELLED' %}is-cancelled{% elif event.status == 'POSTPONED' %}is-postponed{% endif %}">{{ event.get_status_display }}</span></div>
+    <h3><a href="{{ event.url }}">{{ event.title }}</a></h3>
+    <p>{{ event.summary|truncatechars:160 }}</p>
+    <div class="slqs-event-card-meta"><span>📅 {{ event.start_at|date:'d M Y · g:i A' }}</span><span>📍 {{ event.venue_name|default:event.get_venue_mode_display }}</span></div>
+    <a class="slqs-event-text-link" href="{{ event.url }}">Event details <span aria-hidden="true">↗</span></a>
+  </div>
+</article>

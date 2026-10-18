@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Create Your SLQS Account | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}
+<section class="slqs-portal-hero"><div class="container"><div class="eyebrow eyebrow-light">SLQS KSA · MEMBER ACCESS</div><h1>Create your account.</h1><p>Register with your email first. Verify the six-digit OTP before submitting a membership application.</p></div></section>
+<section class="slqs-portal-area"><div class="container slqs-portal-layout">
+  <div class="slqs-portal-panel"><h2>Register by email</h2><p class="slqs-portal-muted">Already registered? <a href="{% url 'member_accounts:login' %}">Sign in</a>.</p>
+    <form method="post" novalidate>{% csrf_token %}{{ form.website }}
+    {% if form.non_field_errors %}<div class="slqs-validation" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% include 'member_accounts/_form_field.html' with field=form.full_name %}
+    {% include 'member_accounts/_form_field.html' with field=form.email %}
+    {% include 'member_accounts/_form_field.html' with field=form.password1 %}
+    {% include 'member_accounts/_form_field.html' with field=form.password2 %}
+    <button type="submit" class="btn btn-dark slqs-portal-button">Create account and send OTP →</button></form>
+  </div>
+  <aside class="slqs-portal-side"><h3>Before applying for membership</h3><div><b>01</b><span>Create your account using your email address.</span></div><div><b>02</b><span>Enter the 6-digit email activation code (valid 10 minutes).</span></div><div><b>03</b><span>Sign in and complete the SLQS professional membership form.</span></div><div><b>04</b><span>Follow your application status on your private dashboard.</span></div></aside>
+</div></section>
+{% endblock %}

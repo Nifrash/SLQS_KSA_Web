@@ -1,0 +1,20 @@
+{% extends 'membership_team/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block main %}
+<div class="eyebrow">COMMITTEE WORKSPACE <span></span> OVERVIEW</div>
+<div class="page-heading"><div><h1>Membership Dashboard</h1><p>Manage your team's application review pipeline and committee actions.</p></div><a href="{% url 'membership_team:applications' %}" class="btn btn-gold">View applications ↗</a></div>
+<div class="metric-grid">
+  <div class="metric-card"><span>Applications visible to you</span><strong>{{ counts.total }}</strong><small>All recorded stages</small></div>
+  <div class="metric-card"><span>Awaiting / under review</span><strong>{{ counts.pending }}</strong><small>Open decisions</small></div>
+  <div class="metric-card"><span>More information needed</span><strong>{{ counts.needs_info }}</strong><small>Applicant action outstanding</small></div>
+  <div class="metric-card"><span>Approved applications</span><strong>{{ counts.approved }}</strong><small>Membership activated</small></div>
+</div>
+<div class="layout-grid">
+  <section class="panel"><div class="panel-head"><div><span class="eyebrow">WORK QUEUE</span><h2>Recent applications</h2></div><a href="{% url 'membership_team:applications' %}">See all ↗</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Applicant</th><th>Region</th><th>Status</th><th>Reviewer</th><th></th></tr></thead><tbody>
+  {% for case in recent %}<tr><td><b>{{ case.application.full_name }}</b><small>{{ case.application.short_reference }}</small></td><td>{{ case.application.get_working_region_display }}</td><td><span class="status status-{{ case.application.status }}">{{ case.application.get_status_display }}</span></td><td>{{ case.assigned_to.get_username|default:'Unassigned' }}</td><td><a class="table-link" href="{% url 'membership_team:case_detail' case.pk %}">Open →</a></td></tr>
+  {% empty %}<tr><td colspan="5" class="empty-state">No applications in your current queue.</td></tr>{% endfor %}
+  </tbody></table></div></section>
+  <aside class="panel guidance"><span class="eyebrow">REVIEW STANDARD</span><h2>A consistent, fair review</h2><p>Review the applicant's qualifications, employment details and experience before recording a recommendation. Final approval is restricted to authorized decision-makers.</p><div class="guidance-line"><span>01</span> Confirm applicant information</div><div class="guidance-line"><span>02</span> Record a private recommendation</div><div class="guidance-line"><span>03</span> Authorized approver decides</div>{% if perms.membership_team.assign_committeecase %}<p class="muted-note">{{ counts.unassigned }} applications are open and unassigned.</p>{% endif %}</aside>
+</div>
+{% endblock %}

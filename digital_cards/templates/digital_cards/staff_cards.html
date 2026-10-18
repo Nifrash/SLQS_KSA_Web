@@ -1,0 +1,23 @@
+{% extends 'membership_team/base.html' %}
+{% block title %}Digital Card Management{% endblock %}
+{% block main %}
+<div class="eyebrow">COMMITTEE WORKSPACE <span></span> DIGITAL MEMBERSHIP</div>
+<div class="page-heading"><div><h1>Digital Membership Cards</h1><p>Issue, revoke and replace QR verification credentials. Card status always checks the live membership record.</p></div></div>
+{% if messages %}{% for msg in messages %}<div class="panel" role="status">{{ msg }}</div>{% endfor %}{% endif %}
+<section class="panel filter-panel"><form class="filters" method="get"><div><label for="q">Find member</label><input id="q" type="search" name="q" value="{{ q }}" maxlength="100" placeholder="Name, membership number, company"></div><button type="submit" class="btn btn-gold">Search ↗</button></form></section>
+<section class="panel"><div class="panel-head"><div><span class="eyebrow">CARD MANAGEMENT</span><h2>{{ page.paginator.count }} approved members</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>Member</th><th>Membership status</th><th>Digital card</th><th>Actions (reason required)</th></tr></thead><tbody>
+{% for row in rows %}<tr>
+  <td><b>{{ row.member.application.full_name }}</b><small>{{ row.member.membership_number }}</small></td>
+  <td>{{ row.member.get_status_display }}{% if row.member.is_past_due %} · Overdue{% endif %}</td>
+  <td>{% if row.card %}{% if row.valid %}Valid{% elif row.card.revoked_at %}Revoked{% else %}Not currently valid{% endif %}{% else %}Not issued{% endif %}<small>{{ row.reason }}</small></td>
+  <td><div class="slqs-card-office-actions">
+  {% if row.card and not row.card.revoked_at %}<form method="post" action="{% url 'digital_card_staff:revoke' row.member.pk %}">{% csrf_token %}<label for="revoke-{{ row.member.pk }}">Revoke reason</label><input id="revoke-{{ row.member.pk }}" name="reason" maxlength="500" required placeholder="Reason for revocation"><button type="submit" class="slqs-card-office-button slqs-card-office-danger">Revoke</button></form>{% endif %}
+  <form method="post" action="{% url 'digital_card_staff:reissue' row.member.pk %}">{% csrf_token %}<label for="reissue-{{ row.member.pk }}">{% if row.card %}Replacement reason{% else %}Issuance reason{% endif %}</label><input id="reissue-{{ row.member.pk }}" name="reason" maxlength="500" required placeholder="Reason for issue/reissue"><button type="submit" class="slqs-card-office-button">{% if row.card %}Replace QR{% else %}Issue card{% endif %}</button></form></div></td>
+</tr>{% empty %}<tr><td colspan="4">No approved members match your search.</td></tr>{% endfor %}
+</tbody></table></div>
+{% if page.has_other_pages %}<div class="pagination"><span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span><div>{% if page.has_previous %}<a href="?q={{ q|urlencode }}&amp;page={{ page.previous_page_number }}">← Previous</a>{% endif %}{% if page.has_next %}<a href="?q={{ q|urlencode }}&amp;page={{ page.next_page_number }}">Next →</a>{% endif %}</div></div>{% endif %}
+</section>
+<section class="panel"><div class="panel-head"><div><span class="eyebrow">AUDIT TRAIL</span><h2>Recent card actions</h2></div></div><div class="table-wrap"><table><thead><tr><th>When</th><th>Member number</th><th>Action</th><th>Staff</th></tr></thead><tbody>{% for item in recent %}<tr><td>{{ item.created_at|date:'d M Y H:i' }}</td><td>{{ item.card.member.membership_number }}</td><td>{{ item.get_action_display }}</td><td>{{ item.actor.get_username|default:'System' }}</td></tr>{% empty %}<tr><td colspan="4">No card changes recorded.</td></tr>{% endfor %}</tbody></table></div></section>
+<style>.slqs-card-office-actions{display:grid;gap:10px;min-width:210px}.slqs-card-office-actions form{display:grid;gap:5px}.slqs-card-office-actions input{max-width:270px;border:1px solid #b4c2cf;border-radius:7px;padding:8px}.slqs-card-office-actions label{font-size:12px}.slqs-card-office-button{background:#132d42;color:#fff;border:0;border-radius:7px;padding:8px;cursor:pointer}.slqs-card-office-danger{background:#922e33}</style>
+{% endblock %}

@@ -1,0 +1,3 @@
+<section class="slqs-values-v2" aria-label="Our professional focus"><div class="container slqs-values-layout">
+{% for item in value.items %}<div class="slqs-value-item"><span class="slqs-value-numeral">0{{ forloop.counter }}</span><div><strong>{{ item.label }}</strong>{% if item.detail %}<span>{{ item.detail }}</span>{% endif %}</div></div>{% endfor %}
+</div></section>

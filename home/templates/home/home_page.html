@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% block meta_description %}{{ page.search_description|default:page.hero_description|truncatechars:155 }}{% endblock %}
+{% block extra_head %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/home_redesign.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-home-v2">
+  <section class="slqs-hero-v2" aria-labelledby="slqs-home-title">
+    <div class="slqs-hero-noise" aria-hidden="true"></div>
+    <div class="container slqs-hero-layout">
+      <div class="slqs-hero-copy">
+        <div class="slqs-kicker slqs-kicker-light"><span></span>{{ page.hero_eyebrow }}</div>
+        <h1 id="slqs-home-title">{{ page.hero_title }}</h1>
+        <p>{{ page.hero_description }}</p>
+        <div class="slqs-hero-actions">
+          <a class="slqs-button slqs-button-gold" href="{{ page.hero_button_path }}">{{ page.hero_button_label }} <span aria-hidden="true">↗</span></a>
+          <a class="slqs-button-text" href="{{ page.hero_secondary_path }}">{{ page.hero_secondary_label }} <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="slqs-hero-smallprint"><span class="slqs-hero-smallprint-dot" aria-hidden="true"></span> SRI LANKAN QUANTITY SURVEYORS · SAUDI ARABIA</div>
+      </div>
+      <div class="slqs-hero-media">
+        <div class="slqs-hero-media-frame">
+          {% if page.hero_image %}
+            {% image page.hero_image fill-1100x1100 as hero_photo %}
+            <img class="slqs-hero-photo" src="{{ hero_photo.url }}" alt="{{ page.hero_image_alt }}" fetchpriority="high">
+          {% else %}
+            <img class="slqs-hero-art" src="{% static 'img/skyline.svg' %}" alt="" fetchpriority="high">
+          {% endif %}
+        </div>
+        <div class="slqs-hero-overlay" aria-hidden="true"><span class="slqs-hero-overlay-star">✦</span><span>EXPERTISE<br>WITHOUT BORDERS</span></div>
+        <div class="slqs-hero-vertical" aria-hidden="true">KNOWLEDGE · CONNECTION · PROGRESS</div>
+      </div>
+    </div>
+    <div class="slqs-hero-scroll" aria-hidden="true"><span class="slqs-scroll-line"></span> EXPLORE SLQS <span>↓</span></div>
+  </section>
+  <div class="slqs-home-editable" id="slqs-home-sections">
+    {% for block in home_sections %}
+      {% include_block block %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

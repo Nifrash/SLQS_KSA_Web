@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Application Received | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/membership.css' %}">{% endblock %}
+{% block content %}
+<section class="slqs-thankyou"><div class="container"><div class="slqs-thankyou-card">
+ <span class="slqs-success-symbol" aria-hidden="true">✓</span>
+ <div class="eyebrow"><span class="eyebrow-line"></span> SLQS KSA MEMBERSHIP</div>
+ <h1>Thank you for your interest in SLQS KSA.</h1>
+ <p>Any new or updated application has been recorded for review. If your email address was entered successfully, you should receive a confirmation when email delivery is configured.</p>
+ <p>The membership team may ask for additional details before making a decision. Submitting an application does not automatically grant membership.</p>
+ <a href="/" class="btn btn-dark">Return to Home <span aria-hidden="true">↗</span></a>
+ </div></div></section>
+{% endblock %}

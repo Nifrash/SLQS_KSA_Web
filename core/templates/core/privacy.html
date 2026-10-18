@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Privacy Information | SLQS Saudi Arabia{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='YOUR INFORMATION' heading='Privacy information.' intro='How this website handles enquiries, event registrations and membership applications.' %}
+<section class="section"><div class="container richtext-page">
+<h2>Information we collect</h2>
+<p>Contact enquiries may include your name, email address, topic and message. Event registrations may include your name, email and event-related contact details. Membership applications collect the details provided in the application form, including full name, date of birth, email, KSA and WhatsApp phone numbers, WhatsApp-group membership answer, employer, job title, educational and professional qualifications, years of experience, KSA region and your suggestions.</p>
+<h2>How information is used</h2>
+<p>SLQS uses this information to assess applications, communicate decisions, manage activities and respond to enquiries. Membership applications are reviewed by authorized administrators. We do not publish individual application details or provide public access to the applicant database.</p>
+<h2>Emails and application updates</h2>
+<p>The website may send application receipts, review decisions and private application-update links by email when its email service is configured. Anyone who has access to an application-update link may be able to edit the related application during the link's validity period; please do not share it.</p>
+<h2>Access and retention</h2>
+<p>Access is restricted to authorized website and membership administrators. SLQS should approve a formal retention period, deletion process, privacy contact and applicable legal notices before accepting real public registrations. Administrator CSV exports may contain personal information and must be handled securely.</p>
+<h2>Questions</h2>
+<p>For requests or questions regarding your information, please use the <a href="{% url 'core:contact' %}">contact page</a>.</p>
+<p class="editorial-note">This is an interim explanation for the SLQS website's development phases, not an organization-approved final privacy policy. If you have published a CMS-based Privacy page, update that content as well.</p>
+</div></section>
+{% endblock %}

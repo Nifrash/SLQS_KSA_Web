@@ -1,0 +1,67 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Member Dashboard | SLQS Saudi Arabia{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}"><link rel="stylesheet" href="{% static 'css/member_dashboard.css' %}"><link rel="stylesheet" href="{% static 'css/member_information.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-member-workspace">
+  <div class="container slqs-member-frame">
+    {% include 'member_accounts/_portal_sidebar.html' with portal_section='dashboard' %}
+    <div class="slqs-member-main">
+      <div class="slqs-member-topbar"><div><span class="slqs-member-breadcrumb">Member portal <span aria-hidden="true">/</span> Overview</span><h1>My dashboard</h1></div><a class="slqs-member-topbar-profile" href="{% url 'member_accounts:profile' %}"><span>Manage profile</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+      <section class="slqs-member-welcome" aria-label="Welcome">
+        <div class="slqs-member-welcome-text"><span class="slqs-member-welcome-kicker"><span></span> SRI LANKAN QUANTITY SURVEYORS · KSA</span><h2>Welcome back,<br><em>{{ account.full_name }}.</em></h2><p>Your professional community, membership information and account details—all in one place.</p>
+        {% if can_apply %}<a class="slqs-member-gold-button" href="{% url 'membership:apply' %}">Apply for membership <span aria-hidden="true">↗</span></a>
+        {% elif application %}<a class="slqs-member-gold-button" href="#membership-application">View my application <span aria-hidden="true">↗</span></a>
+        {% else %}<a class="slqs-member-gold-button" href="{% url 'core:contact' %}">Contact membership team <span aria-hidden="true">↗</span></a>{% endif %}</div>
+        <div class="slqs-member-welcome-avatar slqs-member-avatar">{% if account.profile_photo %}<img src="{{ account.profile_photo.url }}" alt="Profile photo of {{ account.full_name }}" width="142" height="142">{% else %}<span aria-hidden="true">{{ account.full_name|slice:':1'|upper }}</span>{% endif %}<a href="{% url 'member_accounts:profile' %}" aria-label="Update profile picture" title="Update profile picture">✎</a></div>
+      </section>
+      <div class="slqs-member-metrics" aria-label="Member overview">
+        <article class="slqs-member-metric"><div class="slqs-member-metric-label">Account verification<span class="slqs-member-metric-symbol">✓</span></div><div class="slqs-member-metric-value">Verified</div><div class="slqs-member-metric-foot">Your email is confirmed</div></article>
+        <article class="slqs-member-metric"><div class="slqs-member-metric-label">Application status<span class="slqs-member-metric-symbol">↗</span></div><div class="slqs-member-metric-value">{% if application %}{{ application.get_status_display }}{% elif legacy_application_needs_linking %}Requires linking{% else %}Not submitted{% endif %}</div><div class="slqs-member-metric-foot">{% if application %}Reference {{ application.short_reference }}{% elif legacy_application_needs_linking %}Administrator verification required{% else %}Apply when you are ready{% endif %}</div></article>
+        <article class="slqs-member-metric"><div class="slqs-member-metric-label">Membership status<span class="slqs-member-metric-symbol">✧</span></div><div class="slqs-member-metric-value">{% if member %}{{ member.get_status_display }}{% elif application.status == 'approved' %}Approved — record pending{% elif application %}Awaiting approval{% else %}Not yet a member{% endif %}</div><div class="slqs-member-metric-foot">{% if member %}{{ member.membership_number }}{% else %}Approved by the SLQS committee{% endif %}</div></article>
+      </div>
+      {% if pending_info_request %}
+      <section class="slqs-action-notice" aria-labelledby="info-action-heading" role="status">
+        <span class="slqs-action-notice-tag">ACTION REQUIRED · MEMBERSHIP REVIEW</span>
+        <h2 id="info-action-heading">The committee needs a supporting document</h2>
+        <p>{{ pending_info_request.message|linebreaksbr }}</p>
+        <a href="{% url 'membership:respond' pending_info_request.pk %}" class="slqs-member-gold-button">Reply and upload document <span aria-hidden="true">↗</span></a>
+      </section>
+      {% elif application.status == 'more_info' %}
+      <div class="slqs-member-alert" role="status"><strong>Additional information requested.</strong> Open <a href="{% url 'member_accounts:notifications' %}">Notifications</a> or contact the membership team for assistance.</div>
+      {% endif %}
+      <section class="slqs-member-card slqs-inbox-preview" aria-label="Recent notifications">
+        <div class="slqs-member-card-header"><div><span class="slqs-member-section-kicker">YOUR INBOX</span><h2>Notifications{% if unread_notifications %} <span class="slqs-unread-count">{{ unread_notifications }} new</span>{% endif %}</h2></div><a class="slqs-member-inline-link" href="{% url 'member_accounts:notifications' %}">View all ↗</a></div>
+        {% for notification in recent_notifications %}
+        <div class="slqs-inbox-line"><div><b>{{ notification.title }}</b><p>{{ notification.message|truncatechars:140 }}</p><small>{{ notification.created_at|date:'d M Y, H:i' }}</small></div>{% if notification.kind == 'info_request' and notification.information_request_id and application.status == 'more_info' and not notification.information_request.responded_at %}<a href="{% url 'membership:respond' notification.information_request_id %}">Respond ↗</a>{% endif %}</div>
+        {% empty %}<p class="slqs-member-card-note">No notifications yet. Committee updates will appear here.</p>{% endfor %}
+      </section>
+      {% if legacy_application_needs_linking %}<div class="slqs-member-alert" role="status"><strong>We found an earlier application with this email.</strong> To protect your information, please contact the SLQS membership team to link it to your new account.</div>{% endif %}
+      <div class="slqs-member-content-grid">
+        <section class="slqs-member-card slqs-member-membership-card" id="membership-application">
+          <div class="slqs-member-card-header"><div><span class="slqs-member-section-kicker">YOUR MEMBERSHIP</span><h2>Membership application</h2></div><span class="slqs-member-status-chip {% if member %}is-approved{% elif application.status == 'rejected' %}is-rejected{% elif application.status == 'more_info' %}is-action{% endif %}">{% if application %}{{ application.get_status_display }}{% elif legacy_application_needs_linking %}Action needed{% else %}Not submitted{% endif %}</span></div>
+          {% if application %}
+          <div class="slqs-member-steps" aria-label="Application progress">
+            <div class="is-done"><span>✓</span><small>Email verified</small></div>
+            <div class="is-done"><span>✓</span><small>Application submitted</small></div>
+            <div class="{% if member %}is-done{% elif application.status == 'rejected' %}is-alert{% elif application.status == 'more_info' %}is-alert{% else %}is-current{% endif %}"><span>{% if member %}✓{% else %}3{% endif %}</span><small>Committee decision</small></div>
+          </div>
+          <dl class="slqs-member-details"><div><dt>Application reference</dt><dd>{{ application.short_reference }}</dd></div><div><dt>Full name</dt><dd>{{ application.full_name }}</dd></div><div><dt>Company</dt><dd>{{ application.company_name }}</dd></div><div><dt>Job title</dt><dd>{{ application.job_title }}</dd></div><div><dt>Working region</dt><dd>{{ application.get_working_region_display }}</dd></div><div><dt>Submitted on</dt><dd>{{ application.created_at|date:'d M Y' }}</dd></div></dl>
+          {% if application.status == 'more_info' %}<p class="slqs-member-card-note">Please respond directly in your dashboard and upload your supporting document. You can also contact SLQS if you need assistance.</p>{% elif application.status == 'rejected' %}<p class="slqs-member-card-note">Please contact the membership team if you need further information about this decision.</p>{% else %}<p class="slqs-member-card-note">Your application details are retained for the committee's review. Your website account remains active throughout this process.</p>{% endif %}
+          {% elif legacy_application_needs_linking %}<div class="slqs-member-empty"><span class="slqs-member-empty-icon">!</span><h3>Verify your earlier application</h3><p>An earlier membership application needs to be linked by an SLQS administrator. We do not link it automatically based on email alone.</p><a class="slqs-member-primary-button" href="{% url 'core:contact' %}">Contact membership team <span aria-hidden="true">↗</span></a></div>
+          {% else %}<div class="slqs-member-empty"><span class="slqs-member-empty-icon">+</span><h3>Take your next step</h3><p>Your email is verified. Submit your professional details to begin your SLQS membership application.</p><a class="slqs-member-primary-button" href="{% url 'membership:apply' %}">Apply for membership <span aria-hidden="true">↗</span></a></div>{% endif %}
+        </section>
+        <div class="slqs-member-right-stack">
+          <section class="slqs-member-card slqs-member-profile-card"><div class="slqs-member-card-header"><div><span class="slqs-member-section-kicker">PERSONAL DETAILS</span><h2>My profile</h2></div><a class="slqs-member-inline-link" href="{% url 'member_accounts:profile' %}">Edit <span aria-hidden="true">↗</span></a></div>
+            <div class="slqs-member-profile-line"><div class="slqs-member-avatar slqs-member-avatar-card">{% if account.profile_photo %}<img src="{{ account.profile_photo.url }}" alt="Profile photo of {{ account.full_name }}" loading="lazy" width="64" height="64">{% else %}<span aria-hidden="true">{{ account.full_name|slice:':1'|upper }}</span>{% endif %}</div><div><strong>{{ account.full_name }}</strong><small>{% if account.job_title %}{{ account.job_title }}{% else %}SLQS website account{% endif %}</small></div></div>
+            <div class="slqs-member-profile-info"><div><span>Verified email</span><strong>{{ request.user.email }}</strong></div><div><span>KSA phone</span><strong>{{ account.ksa_phone|default:'Not added' }}</strong></div><div><span>Company</span><strong>{{ account.company_name|default:'Not added' }}</strong></div></div>
+            <a class="slqs-member-card-link" href="{% url 'member_accounts:profile' %}">Manage profile and photo <span aria-hidden="true">↗</span></a>
+          </section>
+          <section class="slqs-member-card slqs-member-actions-card"><span class="slqs-member-section-kicker">QUICK ACCESS</span><h2>Explore SLQS</h2><a href="{% url 'core:events' %}"><span>Events & professional programmes</span><span aria-hidden="true">↗</span></a><a href="{% url 'core:news' %}"><span>Association news</span><span aria-hidden="true">↗</span></a><a href="{% url 'core:contact' %}"><span>Contact membership team</span><span aria-hidden="true">↗</span></a></section>
+        </div>
+      </div>
+      {% if member %}<section class="slqs-member-card slqs-member-id-section" id="membership-details"><div><span class="slqs-member-section-kicker">APPROVED MEMBERSHIP</span><h2>Your SLQS membership</h2><p>Your membership details are administered by the SLQS committee.</p></div><dl><div><dt>Member number</dt><dd>{{ member.membership_number }}</dd></div><div><dt>Membership status</dt><dd>{{ member.get_status_display }}</dd></div><div><dt>Joined</dt><dd>{{ member.joined_on|date:'d M Y' }}</dd></div><div><dt>Renewal due</dt><dd>{% if member.renewal_due_on %}{{ member.renewal_due_on|date:'d M Y' }}{% else %}Not yet set{% endif %}</dd></div></dl><a class="slqs-member-card-link" href="{% url 'digital_cards:my_card' %}">View digital membership card <span aria-hidden="true">↗</span></a></section>{% endif %}
+      <p class="slqs-member-footer-note">Website email verification confirms your account only. Professional membership requires committee approval.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

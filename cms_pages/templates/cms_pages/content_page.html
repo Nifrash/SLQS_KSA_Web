@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags %}
+{% block title %}{{ page.seo_title|default:page.title }} | SLQS Saudi Arabia{% endblock %}
+{% block meta_description %}{{ page.search_description|default:page.intro|truncatechars:155 }}{% endblock %}
+{% block content %}
+<section class="inner-hero cms-page-hero">
+  <div class="container inner-hero-inner">
+    <div class="inner-heading-group">
+      {% if page.eyebrow %}<div class="eyebrow eyebrow-light"><span class="eyebrow-line"></span>{{ page.eyebrow }}</div>{% endif %}
+      <h1>{{ page.title }}</h1>
+      {% if page.intro %}<p>{{ page.intro }}</p>{% endif %}
+    </div>
+    <span class="inner-hero-decor" aria-hidden="true">SLQS</span>
+  </div>
+</section>
+{% if page.body %}
+  <div class="cms-page-body">{% for block in page.body %}{% include_block block %}{% endfor %}</div>
+{% else %}
+  <section class="cms-section"><div class="container"><p>Further information will be published here.</p></div></section>
+{% endif %}
+{% endblock %}

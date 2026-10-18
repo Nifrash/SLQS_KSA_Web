@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load wagtailimages_tags %}
+{% block title %}{{ page.seo_title|default:page.title }} | SLQS Saudi Arabia{% endblock %}
+{% block meta_description %}{{ page.search_description|default:page.intro|truncatechars:155 }}{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker=page.eyebrow heading=page.title intro=page.intro %}
+<section class="section slqs-events-listing" id="event-calendar">
+  <div class="container">
+    <div class="slqs-events-intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> STAY CONNECTED</div><h2 class="section-heading">The SLQS <em>calendar.</em></h2></div><p>Join professional learning, networking and community experiences across the Kingdom.</p></div>
+    <form method="get" action="{% url 'events:index' %}" class="slqs-events-filter" role="search" aria-label="Filter events">
+      <div><label for="event-search">Search events</label><input id="event-search" name="q" type="search" maxlength="100" placeholder="Search by title or venue" value="{{ search_query }}"></div>
+      <div><label for="event-type">Event type</label><select id="event-type" name="type"><option value="">All types</option>{% for value,label in event_types %}<option value="{{ value }}" {% if selected_kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div><label for="event-period">When</label><select id="event-period" name="when"><option value="upcoming" {% if selected_period == 'upcoming' %}selected{% endif %}>Upcoming events</option><option value="past" {% if selected_period == 'past' %}selected{% endif %}>Past events</option></select></div>
+      <button class="btn btn-gold" type="submit">Find events <span aria-hidden="true">↗</span></button>
+      <a href="{% url 'events:index' %}" class="slqs-events-clear">Clear</a>
+    </form>
+    {% if events_page.object_list %}
+    <div class="slqs-event-grid">{% for event in events_page %}{% include 'events/includes/event_card.html' with event=event %}{% endfor %}</div>
+    {% if events_page.paginator.num_pages > 1 %}<nav class="slqs-events-pager" aria-label="Events pagination">
+      {% if events_page.has_previous %}<a href="?q={{ search_query|urlencode }}&amp;type={{ selected_kind|urlencode }}&amp;when={{ selected_period }}&amp;page={{ events_page.previous_page_number }}">← Previous</a>{% endif %}
+      <span>Page {{ events_page.number }} of {{ events_page.paginator.num_pages }}</span>
+      {% if events_page.has_next %}<a href="?q={{ search_query|urlencode }}&amp;type={{ selected_kind|urlencode }}&amp;when={{ selected_period }}&amp;page={{ events_page.next_page_number }}">Next →</a>{% endif %}
+    </nav>{% endif %}
+    {% else %}<div class="slqs-events-empty"><span class="eyebrow tiny-eyebrow">EVENT CALENDAR</span><h3>{% if search_query or selected_kind %}No matching events found{% elif selected_period == 'past' %}No past events published yet{% else %}Upcoming events will appear here{% endif %}</h3><p>Explore SLQS opportunities as they are announced. Check back for new seminars and gatherings.</p><a class="text-link" href="{% url 'core:contact' %}">Ask about events ↗</a></div>{% endif %}
+  </div>
+</section>
+{% endblock %}

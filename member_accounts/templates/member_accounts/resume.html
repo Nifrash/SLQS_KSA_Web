@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Complete Email Activation | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}
+<section class="slqs-portal-area"><div class="container slqs-portal-narrow"><div class="slqs-portal-panel"><h1>Complete your activation</h1>
+<p>If you registered previously but closed your browser, enter the registered email and password to request a new OTP.</p>
+<form method="post">{% csrf_token %}{% if form.non_field_errors %}<div class="slqs-validation">{{ form.non_field_errors }}</div>{% endif %}
+{% include 'member_accounts/_form_field.html' with field=form.email %}{% include 'member_accounts/_form_field.html' with field=form.password %}
+<button class="btn btn-dark slqs-portal-button" type="submit">Continue verification</button></form></div></div></section>
+{% endblock %}

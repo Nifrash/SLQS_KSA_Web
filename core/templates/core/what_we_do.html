@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}What We Do | SLQS Saudi Arabia{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='OUR ACTIVITIES' heading='Creating space for professional growth.' intro='A platform for professional development, shared knowledge and meaningful connections.' %}
+<section class="section"><div class="container focus-list">
+<article class="focus-row reveal"><div class="focus-numeral">01</div><div class="focus-title"><h2>Professional development</h2><span>LEARN & EVOLVE</span></div><p>Encouraging technical conversations, learning opportunities and the development of professional knowledge across the built environment.</p><span class="focus-asterisk">✳</span></article>
+<article class="focus-row reveal"><div class="focus-numeral">02</div><div class="focus-title"><h2>Networking & connection</h2><span>CONNECT & COLLABORATE</span></div><p>Connecting Sri Lankan QS professionals working in different sectors, disciplines and regions within Saudi Arabia.</p><span class="focus-asterisk">✳</span></article>
+<article class="focus-row reveal"><div class="focus-numeral">03</div><div class="focus-title"><h2>Knowledge sharing</h2><span>IDEAS & EXPERIENCE</span></div><p>Creating opportunities to share practical experience, new ideas, industry perspectives and professional insights.</p><span class="focus-asterisk">✳</span></article>
+<article class="focus-row reveal"><div class="focus-numeral">04</div><div class="focus-title"><h2>Community engagement</h2><span>PEOPLE & PURPOSE</span></div><p>Supporting a collaborative professional culture where members can meet, participate and contribute to shared initiatives.</p><span class="focus-asterisk">✳</span></article>
+</div></section>
+<section class="page-cta pale-section section"><div class="container"><div><div class="eyebrow"><span class="eyebrow-line"></span> UPCOMING ACTIVITIES</div><h2 class="section-heading">Where ideas become conversations.</h2></div><a class="btn btn-dark" href="{% url 'core:events' %}">Explore events <span>↗</span></a></div></section>
+{% endblock %}

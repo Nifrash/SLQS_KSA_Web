@@ -1,0 +1,49 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>{% block title %}Committee Portal{% endblock %} | SLQS KSA</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/membership_team.css' %}">
+</head>
+<body>
+<div class="portal-shell">
+  <aside class="side-panel" aria-label="Committee navigation">
+    <a class="portal-brand" href="{% url 'membership_team:dashboard' %}" aria-label="SLQS Committee Portal home">
+      <span class="brand-icon">S<span>•</span></span><span><strong>SLQS</strong><small>SAUDI ARABIA</small></span>
+    </a>
+    <div class="portal-label">MEMBERSHIP OFFICE</div>
+    <nav class="side-nav" aria-label="Main navigation">
+      <a href="{% url 'membership_team:dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="selected"{% endif %}><span>▦</span> Dashboard</a>
+      <a href="{% url 'membership_team:applications' %}" {% if '/applications/' in request.path %}class="selected"{% endif %}><span>▤</span> Applications</a>
+      {% if perms.membership.view_memberprofile %}
+        <a href="{% url 'membership_team:members' %}" {% if request.resolver_match.url_name == 'members' %}class="selected"{% endif %}><span>♙</span> Member Directory</a>
+      {% endif %}
+      {% if perms.membership_team.assign_committeecase or perms.membership_team.decide_committeecase %}
+        <a href="{% url 'digital_card_staff:cards' %}" {% if '/membership-team/cards/' in request.path %}class="selected"{% endif %}><span>▣</span> Digital Cards</a>
+      {% endif %}
+      {% if perms.membership_team.decide_committeecase %}
+        <a href="{% url 'legacy_members:import' %}" {% if '/existing-members/import/' in request.path %}class="selected"{% endif %}><span>⇧</span> Import Existing Members</a>
+      {% endif %}
+      {% if perms.membership_team.export_committeecase %}<a href="{% url 'membership_team:export' %}"><span>⇩</span> Export Report</a>{% endif %}
+    </nav>
+    <div class="side-bottom">
+      <div class="user-avatar">{{ request.user.username|slice:':1'|upper }}</div>
+      <div class="user-text"><b>{{ request.user.get_full_name|default:request.user.get_username }}</b><small>Committee account</small></div>
+      <form method="post" action="{% url 'membership_team:logout' %}">{% csrf_token %}<button type="submit" class="signout" title="Sign out" aria-label="Sign out">↗</button></form>
+    </div>
+  </aside>
+  <div class="main-panel">
+    <header class="topbar"><span>SLQS <strong>Membership Committee</strong></span><span class="topbar-right"><span class="online-dot"></span> Secure staff workspace</span></header>
+    <main class="page-wrap">
+      {% if messages %}<div class="message-stack" role="status">{% for message in messages %}<div class="flash {% if message.tags %}flash-{{ message.tags }}{% endif %}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% block main %}{% endblock %}
+    </main>
+    <footer class="portal-footer">SLQS KSA · Confidential membership information · Authorized personnel only</footer>
+  </div>
+</div>
+</body>
+</html>

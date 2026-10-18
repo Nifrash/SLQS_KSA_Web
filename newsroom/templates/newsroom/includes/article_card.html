@@ -1,0 +1,17 @@
+{% load wagtailimages_tags %}
+<article class="news-card">
+  <a class="news-card-image" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+    {% if article.featured_image %}
+      {% image article.featured_image fill-760x470 as thumb %}
+      <img src="{{ thumb.url }}" alt="" loading="lazy" width="{{ thumb.width }}" height="{{ thumb.height }}">
+    {% else %}
+      <span class="news-card-placeholder" aria-hidden="true"><span>SLQS</span><strong>NEWSROOM</strong></span>
+    {% endif %}
+  </a>
+  <div class="news-card-body">
+    <div class="news-meta"><span>{{ article.get_kind_display }}</span><span aria-hidden="true">·</span><time datetime="{{ article.publish_date|date:'Y-m-d' }}">{{ article.publish_date|date:'d M Y' }}</time></div>
+    <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+    <p>{{ article.excerpt|truncatechars:165 }}</p>
+    <a class="news-card-more" href="{{ article.url }}" aria-label="Read {{ article.title }}">Read article <span aria-hidden="true">↗</span></a>
+  </div>
+</article>

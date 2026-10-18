@@ -1,0 +1,9 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<section class="cms-section cms-image-text-section"><div class="container cms-image-text {% if value.image_position == 'right' %}cms-image-right{% endif %}">
+  <div class="cms-image-pane">{% image value.image fill-880x640 loading="lazy" %}</div>
+  <div class="cms-image-copy">
+    {% if value.eyebrow %}<div class="eyebrow"><span class="eyebrow-line"></span>{{ value.eyebrow }}</div>{% endif %}
+    <h2 class="section-heading">{{ value.title }}</h2>
+    <div class="cms-prose">{{ value.text|richtext }}</div>
+  </div>
+</div></section>

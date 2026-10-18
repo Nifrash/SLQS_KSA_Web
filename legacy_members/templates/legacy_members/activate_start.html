@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Activate Existing SLQS Membership{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}<section class="slqs-portal-hero"><div class="container"><div class="eyebrow eyebrow-light">EXISTING SLQS MEMBERS</div><h1>Activate your membership account.</h1><p>Already registered through the SLQS Google Form? Verify your registered email and create your own password.</p></div></section>
+<section class="slqs-portal-area"><div class="container slqs-portal-narrow"><div class="slqs-portal-panel"><h2>Step 1 — Registered email</h2>
+<p>Your membership must already be imported and checked by SLQS. Do not register again.</p>
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}{% include 'member_accounts/_form_field.html' with field=field %}{% endfor %}<button class="btn btn-dark slqs-portal-button" type="submit">Send verification code →</button></form>
+<p><a href="{% url 'member_accounts:login' %}">Already have an account? Sign in</a></p><p>Cannot access your original email? Contact the SLQS Membership Team for identity verification.</p>
+</div></div></section>{% endblock %}

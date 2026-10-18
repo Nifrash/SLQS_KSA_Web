@@ -1,0 +1,39 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}My Member Profile | SLQS Saudi Arabia{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}"><link rel="stylesheet" href="{% static 'css/member_dashboard.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-member-workspace">
+  <div class="container slqs-member-frame">
+    {% include 'member_accounts/_portal_sidebar.html' with portal_section='profile' %}
+    <div class="slqs-member-main">
+      <div class="slqs-member-topbar"><div><span class="slqs-member-breadcrumb">Member portal <span aria-hidden="true">/</span> My profile</span><h1>Edit my profile</h1></div><a class="slqs-member-topbar-profile" href="{% url 'member_accounts:dashboard' %}"><span>Back to dashboard</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 12H7m6-6-6 6 6 6"/></svg></a></div>
+      <section class="slqs-member-card slqs-member-edit-card">
+        <div class="slqs-member-edit-intro"><span class="slqs-member-section-kicker">ACCOUNT INFORMATION</span><h2>Your personal profile</h2><p>Keep your photo and contact information updated. Changes here do not alter an application already submitted to the SLQS committee.</p></div>
+        <form method="post" enctype="multipart/form-data" novalidate>{% csrf_token %}
+          {% if form.non_field_errors %}<div class="slqs-validation" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+          <div class="slqs-member-photo-field">
+            <div class="slqs-member-avatar slqs-member-avatar-edit" id="slqs-avatar-preview">
+              {% if account.profile_photo %}<img src="{{ account.profile_photo.url }}" alt="Current profile photo" width="116" height="116">{% else %}<span aria-hidden="true">{{ account.full_name|slice:':1'|upper }}</span>{% endif %}
+            </div>
+            <div class="slqs-member-photo-control"><strong>Profile picture</strong><p>Upload a clear photo for your private member dashboard. JPEG, PNG or WebP, up to 5 MB.</p><div class="slqs-member-photo-input-wrap">{{ form.profile_photo }}</div>
+              {% for error in form.profile_photo.errors %}<small class="slqs-validation" role="alert">{{ error }}</small>{% endfor %}
+              <small>Photos are resized automatically. Embedded location metadata is removed.</small>
+            </div>
+          </div>
+          <div class="slqs-member-form-divider"></div>
+          <div class="slqs-member-email-readonly"><span>Verified email address</span><strong>{{ request.user.email }}</strong><small>Your account email is verified and cannot be changed here.</small></div>
+          <div class="slqs-member-form-grid">
+            {% include 'member_accounts/_form_field.html' with field=form.full_name %}
+            {% include 'member_accounts/_form_field.html' with field=form.ksa_phone %}
+            {% include 'member_accounts/_form_field.html' with field=form.whatsapp_phone %}
+            {% include 'member_accounts/_form_field.html' with field=form.company_name %}
+            <div class="slqs-member-span-2">{% include 'member_accounts/_form_field.html' with field=form.job_title %}</div>
+          </div>
+          <div class="slqs-member-form-actions"><button class="slqs-member-primary-button" type="submit">Save changes <span aria-hidden="true">↗</span></button><a href="{% url 'member_accounts:dashboard' %}">Cancel</a></div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}<script src="{% static 'js/member_profile_photo.js' %}" defer></script>{% endblock %}

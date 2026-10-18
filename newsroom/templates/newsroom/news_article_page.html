@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% block title %}{{ page.seo_title|default:page.title }} | SLQS News{% endblock %}
+{% block meta_description %}{{ page.search_description|default:page.excerpt|truncatechars:155 }}{% endblock %}
+{% block extra_head %}
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.excerpt }}">
+<meta property="article:published_time" content="{{ page.first_published_at|date:'c' }}">
+{% if page.featured_image %}{% image page.featured_image fill-1200x630 as social_img %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ social_img.url }}">{% endif %}
+{% endblock %}
+{% block content %}
+<section class="news-article-heading"><div class="container news-article-head-container">
+  <nav class="news-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="{% url 'newsroom:index' %}">News</a><span aria-hidden="true">/</span><span>Article</span></nav>
+  <div class="eyebrow"><span class="eyebrow-line"></span> {{ page.get_kind_display|upper }}</div>
+  <h1>{{ page.title }}</h1>
+  <p class="news-article-deck">{{ page.excerpt }}</p>
+  <div class="news-article-byline"><span>{% if page.category %}{{ page.category.name }}{% else %}SLQS Saudi Arabia{% endif %}</span><span aria-hidden="true">·</span><time datetime="{{ page.publish_date|date:'Y-m-d' }}">{{ page.publish_date|date:'d F Y' }}</time>{% if page.byline %}<span aria-hidden="true">·</span><span>By {{ page.byline }}</span>{% endif %}</div>
+</div></section>
+{% if page.featured_image %}
+<div class="container news-article-cover">{% image page.featured_image width-1600 as cover %}<img src="{{ cover.url }}" alt="{{ page.featured_image.title }}" width="{{ cover.width }}" height="{{ cover.height }}"></div>
+{% endif %}
+<section class="news-article-content"><div class="container news-article-layout">
+  <article class="news-article-prose">
+    {% if page.body %}
+      {% for block in page.body %}{% include_block block %}{% endfor %}
+    {% else %}<p>{{ page.excerpt }}</p>{% endif %}
+    <div class="news-article-end"><span>SLQS · SAUDI ARABIA</span><a href="{% url 'newsroom:index' %}">← Back to news</a></div>
+  </article>
+  <aside class="news-article-side" aria-label="About this publication"><div class="news-side-card"><span class="eyebrow tiny-eyebrow">SLQS NEWSROOM</span><h2>Knowledge shared. Connections built.</h2><p>Explore official association updates and professional perspectives.</p><a class="text-link" href="{% url 'newsroom:index' %}">Browse newsroom ↗</a></div></aside>
+</div></section>
+{% if related_articles %}
+<section class="section newsroom-related"><div class="container"><div class="eyebrow"><span class="eyebrow-line"></span> CONTINUE READING</div><h2 class="section-heading">Related <em>stories.</em></h2><div class="newsroom-grid">{% for article in related_articles %}{% include 'newsroom/includes/article_card.html' with article=article %}{% endfor %}</div></div></section>
+{% endif %}
+{% endblock %}

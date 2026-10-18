@@ -1,0 +1,6 @@
+<div class="slqs-account-field{% if field.errors %} slqs-account-error{% endif %}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-label="required">*</span>{% endif %}</label>
+  {{ field }}
+  {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+  {% for error in field.errors %}<small class="slqs-validation">{{ error }}</small>{% endfor %}
+</div>

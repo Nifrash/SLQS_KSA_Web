@@ -1,0 +1,14 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+<section class="slqs-section-v2 slqs-story-v2" aria-label="{{ value.title }}"><div class="container slqs-story-layout {% if value.image_position == 'left' %}slqs-image-left{% endif %}">
+  <div class="slqs-story-copy">
+    {% if value.eyebrow %}<div class="slqs-kicker"><span></span>{{ value.eyebrow }}</div>{% endif %}
+    <h2>{{ value.title }}</h2><div class="slqs-story-body">{{ value.body|richtext }}</div>
+    {% if value.button_label %}<a class="slqs-text-link-v2" href="{% if value.page %}{{ value.page.url }}{% elif value.external_url %}{{ value.external_url }}{% else %}/about/{% endif %}"{% if value.external_url and not value.page %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ value.button_label }} <span aria-hidden="true">↗</span></a>{% endif %}
+  </div>
+  <div class="slqs-story-media">
+    <div class="slqs-story-image-frame">
+      {% if value.image %}{% image value.image fill-900x1100 loading="lazy" %}{% else %}<img src="{% static 'img/architectural-detail.svg' %}" alt="Architectural illustration" loading="lazy">{% endif %}
+    </div>
+    <div class="slqs-story-badge" aria-hidden="true"><span>SLQS</span><small>ONE COMMUNITY<br>MANY PERSPECTIVES</small></div>
+  </div>
+</div></section>

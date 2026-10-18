@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Member Login | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}
+<section class="slqs-portal-hero"><div class="container"><div class="eyebrow eyebrow-light">SLQS PROFESSIONAL COMMUNITY</div><h1>Welcome back.</h1><p>Access your secure member dashboard and track your SLQS application.</p></div></section>
+<section class="slqs-portal-area"><div class="container slqs-portal-narrow"><div class="slqs-portal-panel"><h2>Member sign in</h2>
+<form method="post" novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="slqs-validation" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+{% include 'member_accounts/_form_field.html' with field=form.username %}
+{% include 'member_accounts/_form_field.html' with field=form.password %}
+{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+<button class="btn btn-dark slqs-portal-button" type="submit">Sign in →</button></form>
+<div class="slqs-portal-links"><a href="{% url 'member_accounts:password_reset' %}">Forgot password?</a><a href="{% url 'member_accounts:register' %}">Create an account</a><a href="{% url 'member_accounts:resume_verification' %}">Verify a pending account</a><a href="{% url 'legacy_members:activate' %}"><strong>Already an SLQS member? Activate your account →</strong></a></div>
+</div></div></section>
+{% endblock %}

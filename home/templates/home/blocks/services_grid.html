@@ -1,0 +1,14 @@
+{% load wagtailimages_tags %}
+<section class="slqs-section-v2 slqs-services-v2" aria-label="{{ value.title }}"><div class="container">
+  <div class="slqs-section-head-v2"><div>{% if value.eyebrow %}<div class="slqs-kicker"><span></span>{{ value.eyebrow }}</div>{% endif %}<h2>{{ value.title }}</h2></div>{% if value.description %}<p>{{ value.description }}</p>{% endif %}</div>
+  <div class="slqs-service-grid-v2">
+    {% for card in value.cards %}<article class="slqs-service-tile-v2">
+      {% if card.image %}<div class="slqs-service-tile-image">{% image card.image fill-660x480 loading="lazy" %}</div>{% endif %}
+      <div class="slqs-service-tile-top"><span>{{ card.kicker|default:'SLQS SERVICES' }}</span><span class="slqs-service-tile-count">0{{ forloop.counter }}</span></div>
+      <div class="slqs-service-tile-body"><h3>{{ card.title }}</h3><p>{{ card.description }}</p></div>
+      {% if card.page %}<a href="{{ card.page.url }}" class="slqs-service-card-link" aria-label="Learn more about {{ card.title }}">Explore <span aria-hidden="true">↗</span></a>
+      {% elif card.external_url %}<a href="{{ card.external_url }}" target="_blank" rel="noopener noreferrer" class="slqs-service-card-link" aria-label="Learn more about {{ card.title }}">Explore <span aria-hidden="true">↗</span></a>
+      {% else %}<span class="slqs-service-arrow" aria-hidden="true">↗</span>{% endif %}
+    </article>{% endfor %}
+  </div>
+</div></section>

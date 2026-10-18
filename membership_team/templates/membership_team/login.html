@@ -1,0 +1,10 @@
+{% load static %}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Committee Login | SLQS KSA</title><link rel="stylesheet" href="{% static 'css/membership_team.css' %}"></head>
+<body class="login-page">
+<div class="login-wrap"><div class="login-logo">SLQS<span>•</span></div><span class="pill">PRIVATE STAFF ACCESS</span><h1>Membership Committee Portal</h1><p>Review applications and manage professional membership decisions through a secure workspace.</p>
+<form class="login-card" method="post">{% csrf_token %}<h2>Sign in</h2>{% if form.non_field_errors %}<div class="flash flash-error">{{ form.non_field_errors }}</div>{% endif %}
+<label for="id_username">Username</label>{{ form.username }}
+<label for="id_password">Password</label>{{ form.password }}
+<input type="hidden" name="next" value="{{ next }}"><button class="btn btn-gold" type="submit">Sign in securely <span>↗</span></button></form>
+<p class="fine-print">Access is limited to staff accounts assigned by the SLQS administrator. Regular member OTP accounts cannot log in here.</p><a class="back-link" href="/">← Back to SLQS website</a>
+</div></body></html>

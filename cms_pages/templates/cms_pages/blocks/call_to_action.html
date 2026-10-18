@@ -1,0 +1,10 @@
+<section class="cms-section cms-cta-section"><div class="container cms-cta-inner">
+  <div>
+    {% if value.eyebrow %}<div class="eyebrow eyebrow-light">{{ value.eyebrow }}</div>{% endif %}
+    <h2>{{ value.title }}</h2>{% if value.description %}<p>{{ value.description }}</p>{% endif %}
+  </div>
+  {% if value.button_label %}
+    {% if value.page %}<a class="btn btn-gold" href="{{ value.page.url }}">{{ value.button_label }} <span aria-hidden="true">↗</span></a>
+    {% elif value.external_url %}<a class="btn btn-gold" href="{{ value.external_url }}" target="_blank" rel="noopener noreferrer">{{ value.button_label }} <span aria-hidden="true">↗</span></a>{% endif %}
+  {% endif %}
+</div></section>

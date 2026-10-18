@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div class="module" style="max-width:720px; padding:24px;">
+  <h1>Record renewal — {{ member.membership_number }}</h1>
+  <p><strong>{{ member.application.full_name }}</strong> · {{ member.application.preferred_email }}</p>
+  <p>Current status: <strong>{{ member.get_status_display }}</strong></p>
+  <p>Existing renewal due date: <strong>{{ member.renewal_due_on|default:"Not set" }}</strong></p>
+  <p>This records a renewal and changes the member status to Active. No payment is collected.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div class="form-row"><div>{{ field.label_tag }}<div>{{ field }}</div>{{ field.errors }}</div></div>
+    {% endfor %}
+    <div class="submit-row">
+      <input type="submit" value="Confirm renewal" class="default">
+      <a href="{% url 'admin:membership_memberprofile_change' member.pk %}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}News & Announcements | SLQS Saudi Arabia{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='THE SLQS NEWSROOM' heading='Stay informed. Stay inspired.' intro='The place for association news, updates and professional perspectives.' %}
+<section class="section listing-section"><div class="container"><div class="listing-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> LATEST STORIES</div><h2 class="section-heading">News & insights</h2></div><span class="status-tag"><span></span> NEWSROOM LAUNCHING</span></div><div class="empty-feature"><div class="empty-glyph glyph-news">✳</div><div><span class="eyebrow tiny-eyebrow">NO ARTICLES PUBLISHED YET</span><h3>Good stories are coming.</h3><p>News, SLQS announcements and professional updates will appear here once approved and published through the content management system.</p><a class="text-link" href="{% url 'core:about' %}">Learn about SLQS <span>↗</span></a></div></div></div></section>
+{% endblock %}

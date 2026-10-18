@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us | SLQS Saudi Arabia{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='WE ARE HERE TO CONNECT' heading='Let’s start a conversation.' intro='Questions, professional enquiries or an idea to share? We would be pleased to hear from you.' %}
+<section class="section contact-section"><div class="container contact-grid"><div class="contact-info reveal"><div class="eyebrow"><span class="eyebrow-line"></span> GET IN TOUCH</div><h2 class="section-heading">Every connection<br><em>starts somewhere.</em></h2><p>Use the form to reach the SLQS team about membership, events, collaboration or general enquiries.</p><div class="contact-info-card"><span class="contact-info-symbol">⌖</span><div><strong>Our community</strong><span>Kingdom of Saudi Arabia</span></div></div>{% if site_contact_email %}<div class="contact-info-card"><span class="contact-info-symbol">@</span><div><strong>Email</strong><a href="mailto:{{ site_contact_email }}">{{ site_contact_email }}</a></div></div>{% endif %}<div class="contact-aside-note">SLQS · CONNECTING QUANTITY SURVEYORS ACROSS KSA</div></div>
+<div class="contact-form-wrapper reveal"><div class="form-heading"><h2>Send an enquiry</h2><p>Complete the details below and we will record your message for review.</p></div><form method="post" action="{% url 'core:contact' %}" class="contact-form" novalidate>{% csrf_token %}
+<div class="honeypot" aria-hidden="true"><label for="id_website">Leave this field empty</label>{{ form.website }}</div>
+{% if form.non_field_errors %}<div class="form-error-summary">{{ form.non_field_errors }}</div>{% endif %}
+<div class="form-row"><div class="form-field"><label for="{{ form.full_name.id_for_label }}">Full name <em>*</em></label>{{ form.full_name }}{% for error in form.full_name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div><div class="form-field"><label for="{{ form.email.id_for_label }}">Email address <em>*</em></label>{{ form.email }}{% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div></div>
+<div class="form-field"><label for="{{ form.topic.id_for_label }}">What is your enquiry about? <em>*</em></label>{{ form.topic }}{% for error in form.topic.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+<div class="form-field"><label for="{{ form.message.id_for_label }}">Your message <em>*</em></label>{{ form.message }}{% for error in form.message.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+<div class="consent-row">{{ form.privacy_consent }}<label for="{{ form.privacy_consent.id_for_label }}">{{ form.privacy_consent.label }} Read our <a href="{% url 'core:privacy' %}">privacy information</a>.</label></div>{% for error in form.privacy_consent.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+<button type="submit" class="btn btn-dark submit-btn">Send message <span>↗</span></button><p class="form-hint">Fields marked * are required.</p>
+</form></div></div></section>
+{% endblock %}

@@ -1,0 +1,9 @@
+<section class="slqs-section-v2 slqs-events-v2" aria-label="{{ value.title }}"><div class="container slqs-events-layout-v2">
+  <div class="slqs-events-intro-v2">{% if value.eyebrow %}<div class="slqs-kicker slqs-kicker-light"><span></span>{{ value.eyebrow }}</div>{% endif %}<h2>{{ value.title }}</h2>{% if value.description %}<p>{{ value.description }}</p>{% endif %}<a class="slqs-button slqs-button-outline" href="/events/">Explore all events <span aria-hidden="true">↗</span></a></div>
+  <div class="slqs-events-panel-v2"><div class="slqs-events-panel-label"><span class="slqs-live-dot"></span> UPCOMING OPPORTUNITIES <span aria-hidden="true">↗</span></div>
+  {% if upcoming_events %}
+    {% for event in upcoming_events %}<a class="slqs-event-list-item-v2" href="{{ event.url }}"><div class="slqs-event-date-v2"><strong>{{ event.start_at|date:'d' }}</strong><small>{{ event.start_at|date:'M Y' }}</small></div><div class="slqs-event-detail-v2"><h3>{{ event.title }}</h3><span>{{ event.start_at|date:'g:i A' }}{% if event.venue_name %} · {{ event.venue_name }}{% endif %}</span></div><span class="slqs-event-link-arrow" aria-hidden="true">↗</span></a>{% endfor %}
+  {% else %}<div class="slqs-empty-event-v2"><span>✦</span><h3>Something meaningful is coming.</h3><p>Upcoming events will appear here as soon as SLQS publishes them.</p></div>{% endif %}
+    <a class="slqs-events-viewall" href="/events/">Full events calendar <span aria-hidden="true">→</span></a>
+  </div>
+</div></section>

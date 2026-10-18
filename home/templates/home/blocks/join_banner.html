@@ -1,0 +1,6 @@
+{% load wagtailimages_tags %}
+<section class="slqs-join-v2" aria-label="Join SLQS membership">
+  {% if value.image %}<div class="slqs-join-photo" aria-hidden="true">{% image value.image fill-1800x750 loading="lazy" %}</div>{% endif %}
+  <div class="container slqs-join-layout-v2"><div>{% if value.eyebrow %}<div class="slqs-kicker slqs-kicker-light"><span></span>{{ value.eyebrow }}</div>{% endif %}<h2>{{ value.title }}</h2>{% if value.description %}<p>{{ value.description }}</p>{% endif %}</div><a class="slqs-button slqs-button-gold" href="/membership/">{{ value.button_label }} <span aria-hidden="true">↗</span></a></div>
+  <span class="slqs-join-ghost" aria-hidden="true">SLQS</span>
+</section>

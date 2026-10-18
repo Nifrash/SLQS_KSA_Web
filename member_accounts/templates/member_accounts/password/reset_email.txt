@@ -1,0 +1,7 @@
+A password reset was requested for your SLQS KSA website account.
+
+Use the link below to set a new password:
+{{ protocol }}://{{ domain }}{% url 'member_accounts:password_reset_confirm' uidb64=uid token=token %}
+
+If you did not request this, ignore the email.
+SLQS KSA

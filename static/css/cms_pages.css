@@ -1,0 +1,64 @@
+/* SLQS Phase 2 - bespoke Wagtail StreamField layouts; extends the Phase 1 theme. */
+.cms-page-body { background: #fff; }
+.cms-section { padding: 55px 0; }
+.cms-section:nth-child(even) { background: #f7f7f3; }
+.cms-narrow { max-width: 880px; }
+.cms-heading .section-heading { margin-top: 18px; }
+.cms-heading .body-copy { max-width: 850px; }
+.cms-prose { color: #4a606d; font-size: 15px; line-height: 1.9; overflow-wrap: anywhere; }
+.cms-prose p, .cms-prose ul, .cms-prose ol { margin: 0 0 18px; }
+.cms-prose h2, .cms-prose h3, .cms-prose h4 { color: #0b1c2d; margin: 0 0 19px; line-height: 1.25; }
+.cms-prose h2 { font-size: clamp(26px, 3vw, 37px); }
+.cms-prose h3 { font-size: 24px; }
+.cms-prose ul, .cms-prose ol { padding-left: 27px; }
+.cms-prose a { color: #866333; text-decoration: underline; text-underline-offset: 3px; }
+.cms-prose img { max-width: 100%; height: auto; }
+.cms-image-text { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: min(7vw, 96px); }
+.cms-image-pane { background: #e4e9e8; }
+.cms-image-pane img { width: 100%; height: auto; aspect-ratio: 11/8; object-fit: cover; }
+.cms-image-right .cms-image-pane { order: 2; }
+.cms-image-copy .section-heading { margin: 18px 0; }
+.cms-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 19px; margin-top: 30px; }
+.cms-card { border: 1px solid #e3e7e5; background: #fff; padding: 32px; min-height: 245px; }
+.cms-card h3 { font-size: 23px; line-height: 1.35; color: #0b1c2d; margin: 16px 0; }
+.cms-card p { font-size: 13px; color: #657682; }
+.cms-card .text-link { margin-top: 17px; }
+.cms-stats-section { background: #0b1c2d!important; }
+.cms-stats-section .section-heading { color: #fff; }
+.cms-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 22px; }
+.cms-stat { border-left: 2px solid #d5b477; padding: 5px 25px; display: flex; flex-direction: column; }
+.cms-stat strong { font-size: clamp(28px,4vw,48px); color:#d5b477; }
+.cms-stat span { font-size: 13px; color:#d5e0e4; }
+.cms-quote-section { background:#f6f5f1!important; }
+.cms-quote { margin:0; padding-left:25px; border-left:3px solid #d5b477; }
+.cms-quote p { color:#0b1c2d; font-weight:700; font-size:clamp(23px,3.1vw,37px); line-height:1.45; }
+.cms-quote footer { color:#667782; font-size:13px; }
+.cms-faq-item { border-top:1px solid #dce3e3; padding:17px 0; }
+.cms-faq-item:last-child { border-bottom:1px solid #dce3e3; }
+.cms-faq-item summary { font-size:16px; font-weight:800; color:#102b3f; cursor:pointer; padding:5px 25px 5px 0; }
+.cms-faq-item .cms-prose { padding:20px 8px 2px; }
+.cms-cta-section { background:#0b1c2d!important; color:#fff; }
+.cms-cta-inner { display:flex; gap:32px; align-items:center; justify-content:space-between; }
+.cms-cta-inner h2 { font-size:clamp(32px,4vw,53px); max-width:720px; line-height:1.24; margin:16px 0; }
+.cms-cta-inner p { font-size:14px; color:#cfdae1; max-width:640px; }
+.cms-cta-inner .btn { flex:none; }
+.cms-document-link { background:#f7f7f3; border:1px solid #e1e8e6; padding:24px; display:flex; align-items:center; gap:20px; }
+.cms-document-link strong,.cms-document-link small { display:block; }
+.cms-document-link strong { color:#0b1c2d; font-size:15px; }
+.cms-document-link small { color:#6d7b84; font-size:12px; margin-top:5px; }
+.cms-document-link>span:last-child { margin-left:auto; font-size:20px; color:#9b7948; }
+.cms-document-icon { font-size:25px; color:#9b7948; }
+.cms-video-wrap { position:relative; width:100%; aspect-ratio:16/9; }
+.cms-video-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.cms-two-columns { display:grid; grid-template-columns:1fr 1fr; gap:65px; }
+.cms-divider { border:0; border-top:1px solid #dfe6e5; margin:20px 0; }
+.cms-socials { display:flex; gap:14px; flex-wrap:wrap; margin-top:16px; }
+.cms-socials a { font-size:11px; color:#e9c98b; }
+@media(max-width:750px) {
+  .cms-section { padding:38px 0; }
+  .cms-image-text, .cms-two-columns { grid-template-columns:1fr; gap:28px; }
+  .cms-image-right .cms-image-pane { order:0; }
+  .cms-cta-inner { align-items:flex-start; flex-direction:column; }
+  .cms-cta-inner .btn { width:100%; }
+  .cms-card { padding:25px; min-height:0; }
+}

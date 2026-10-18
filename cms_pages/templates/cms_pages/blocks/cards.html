@@ -1,0 +1,13 @@
+<section class="cms-section cms-cards-section"><div class="container">
+  {% if value.title %}<h2 class="section-heading">{{ value.title }}</h2>{% endif %}
+  <div class="cms-card-grid">
+    {% for card in value.cards %}
+      <article class="cms-card">
+        {% if card.eyebrow %}<div class="eyebrow">{{ card.eyebrow }}</div>{% endif %}
+        <h3>{{ card.title }}</h3><p>{{ card.description }}</p>
+        {% if card.page %}<a class="text-link" href="{{ card.page.url }}">Learn more <span aria-hidden="true">↗</span></a>
+        {% elif card.external_url %}<a class="text-link" href="{{ card.external_url }}" target="_blank" rel="noopener noreferrer">Learn more <span aria-hidden="true">↗</span></a>{% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</div></section>

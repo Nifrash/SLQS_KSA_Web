@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Application Already on File | SLQS KSA{% endblock %}
+{% block content %}
+<section class="section"><div class="container" style="max-width:760px"><h1>Existing membership application</h1>
+<p>An application using your verified email address already exists in SLQS records, but it is not yet linked to your website account.</p>
+<p>To protect your personal information, SLQS must confirm ownership before linking this older record. Contact the membership administrator through <a href="{% url 'core:contact' %}">Contact Us</a>. Do not submit a duplicate application.</p>
+<a class="btn btn-dark" href="{% url 'member_accounts:dashboard' %}">Return to your dashboard</a>
+</div></section>
+{% endblock %}

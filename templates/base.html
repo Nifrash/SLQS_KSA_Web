@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a1d30">
+  <meta name="description" content="{% block meta_description %}SLQS Saudi Arabia connects Sri Lankan quantity surveying professionals through knowledge, collaboration and professional development.{% endblock %}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SLQS Saudi Arabia">
+  <title>{% block title %}SLQS | Sri Lankan Quantity Surveyors – Saudi Arabia{% endblock %}</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="stylesheet" href="{% static 'css/cms_pages.css' %}">
+  <link rel="stylesheet" href="{% static 'css/newsroom.css' %}">
+  <link rel="stylesheet" href="{% static 'css/events.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="top-ribbon"><div class="container ribbon-inner"><span><i class="ribbon-dot"></i> SRI LANKAN QUANTITY SURVEYORS · SAUDI ARABIA</span><span class="ribbon-right">Connecting professionals across the Kingdom <span aria-hidden="true">↗</span></span></div></div>
+  <header class="site-header" id="site-header">
+    <div class="container nav-shell">
+      <a class="brand" href="/" aria-label="SLQS home">
+        <img class="brand-mark" src="{% static 'img/slqs-mark.svg' %}" alt="" width="47" height="47">
+        <span class="brand-words"><span class="brand-primary">SLQS<span class="brand-point">.</span></span><span class="brand-subtitle">SAUDI ARABIA</span></span>
+      </a>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="site-navigation" aria-label="Main navigation">
+        {% if slqs_nav.header %}
+        {% for item in slqs_nav.header %}
+          <a class="nav-link {% if request.path == item.url %}active{% endif %}" href="{{ item.url }}" {% if request.path == item.url %}aria-current="page"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+        {% else %}
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/" {% if request.path == '/' %}aria-current="page"{% endif %}>Home</a>
+        <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{% url 'core:about' %}" {% if active_page == 'about' %}aria-current="page"{% endif %}>About us</a>
+        <a class="nav-link {% if active_page == 'what' %}active{% endif %}" href="{% url 'core:what_we_do' %}" {% if active_page == 'what' %}aria-current="page"{% endif %}>What we do</a>
+        <a class="nav-link {% if active_page == 'events' %}active{% endif %}" href="{% url 'core:events' %}" {% if active_page == 'events' %}aria-current="page"{% endif %}>Events</a>
+        <a class="nav-link {% if active_page == 'news' %}active{% endif %}" href="{% url 'core:news' %}" {% if active_page == 'news' %}aria-current="page"{% endif %}>News</a>
+        <a class="nav-link {% if active_page == 'contact' %}active{% endif %}" href="{% url 'core:contact' %}" {% if active_page == 'contact' %}aria-current="page"{% endif %}>Contact</a>
+        <a class="nav-link {% if active_page == 'membership' %}active{% endif %}" href="{% url 'membership:index' %}">Membership</a>
+        {% endif %}
+        <a class="nav-cta" href="{% if request.user.is_authenticated %}{% url 'member_accounts:dashboard' %}{% else %}{% url 'member_accounts:login' %}{% endif %}">{% if request.user.is_authenticated %}My Dashboard{% else %}Member Login{% endif %} <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content">
+    {% if messages %}<div class="container message-stack" role="status" aria-live="polite">{% for message in messages %}<div class="flash-message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-identity">
+          <a class="brand brand-footer" href="/"><img class="brand-mark" src="{% static 'img/slqs-mark.svg' %}" alt="" width="47" height="47"><span class="brand-words"><span class="brand-primary">SLQS<span class="brand-point">.</span></span><span class="brand-subtitle">SAUDI ARABIA</span></span></a>
+          <p>{% if slqs_branding.footer_description %}{{ slqs_branding.footer_description }}{% else %}A professional community for Sri Lankan quantity surveyors in Saudi Arabia — connecting talent, ideas and opportunity.{% endif %}</p>
+        </div>
+        <div class="footer-col"><h3>Explore</h3>
+          {% if slqs_nav.explore %}
+            {% for item in slqs_nav.explore %}<a href="{{ item.url }}">{{ item.label }}</a>{% endfor %}
+          {% else %}
+            <a href="{% url 'core:about' %}">About SLQS</a><a href="{% url 'core:what_we_do' %}">What we do</a><a href="{% url 'core:events' %}">Events</a><a href="{% url 'core:news' %}">News & updates</a>
+          {% endif %}
+        </div>
+        <div class="footer-col"><h3>Community</h3>
+          {% if slqs_nav.community %}
+            {% for item in slqs_nav.community %}<a href="{{ item.url }}">{{ item.label }}</a>{% endfor %}
+          {% else %}
+            <a href="{% url 'core:membership' %}">Membership</a><a href="{% url 'core:contact' %}">Get in touch</a><a href="{% url 'core:privacy' %}">Privacy information</a>
+          {% endif %}
+        </div>
+        <div class="footer-col footer-contact"><h3>Stay connected</h3><p>Serving Sri Lankan QS professionals across the Kingdom of Saudi Arabia.</p><a class="footer-contact-link" href="{% url 'core:contact' %}">Send us an enquiry <span>↗</span></a>{% if slqs_branding.contact_email %}<a href="mailto:{{ slqs_branding.contact_email }}">{{ slqs_branding.contact_email }}</a>{% endif %}<div class="cms-socials">{% if slqs_branding.linkedin_url %}<a href="{{ slqs_branding.linkedin_url }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}{% if slqs_branding.facebook_url %}<a href="{{ slqs_branding.facebook_url }}" target="_blank" rel="noopener noreferrer">Facebook</a>{% endif %}{% if slqs_branding.instagram_url %}<a href="{{ slqs_branding.instagram_url }}" target="_blank" rel="noopener noreferrer">Instagram</a>{% endif %}</div></div>
+      </div>
+      <div class="footer-bottom"><span>© {% now "Y" %} SLQS Saudi Arabia. All rights reserved.</span><span>Built for the professional community <span class="gold-dot">◆</span></span></div>
+    </div>
+  </footer>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

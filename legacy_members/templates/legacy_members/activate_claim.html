@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Create SLQS Account Password{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}<section class="slqs-portal-hero"><div class="container"><h1>Create your website password.</h1><p>Complete one additional identity check to link the historical SLQS member record.</p></div></section>
+<section class="slqs-portal-area"><div class="container slqs-portal-narrow"><div class="slqs-portal-panel"><h2>Step 3 — Claim your existing membership</h2><p>Enter the date of birth supplied in your original registration and choose a secure password.</p>
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}{% include 'member_accounts/_form_field.html' with field=field %}{% endfor %}<button class="btn btn-dark slqs-portal-button" type="submit">Activate and open dashboard →</button></form>
+<p>The SLQS team can help if your imported date of birth or email is incorrect. Your information is used for membership services and identity linking.</p></div></div></section>{% endblock %}

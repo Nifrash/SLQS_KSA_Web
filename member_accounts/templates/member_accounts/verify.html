@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Verify Your Email | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}">{% endblock %}
+{% block content %}
+<section class="slqs-portal-area"><div class="container slqs-portal-narrow"><div class="slqs-portal-panel">
+  <div class="eyebrow">SECURE EMAIL ACTIVATION</div><h1>Verify your email.</h1>
+  <p>Enter the six-digit code sent to <strong>{{ email }}</strong>. The code expires after 10 minutes.</p>
+  <form method="post" novalidate>{% csrf_token %}{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+    {% include 'member_accounts/_form_field.html' with field=form.code %}
+    <button class="btn btn-dark slqs-portal-button" type="submit">Verify and activate account</button>
+  </form><hr>
+  <p class="slqs-portal-muted">Didn't receive it? You can request another code after 60 seconds.</p>
+  <form method="post" action="{% url 'member_accounts:resend_otp' %}">{% csrf_token %}<button class="slqs-portal-link-button" type="submit">Resend verification code</button></form>
+  <p><a href="{% url 'member_accounts:resume_verification' %}">Continue verification on a different browser</a></p>
+</div></div></section>
+{% endblock %}

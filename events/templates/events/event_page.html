@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block title %}{{ page.seo_title|default:page.title }} | SLQS Events{% endblock %}
+{% block meta_description %}{{ page.search_description|default:page.summary|truncatechars:155 }}{% endblock %}
+{% block extra_head %}<meta property="og:title" content="{{ page.title }}"><meta property="og:description" content="{{ page.summary }}">{% endblock %}
+{% block content %}
+<section class="slqs-event-detail-hero"><div class="container">
+  <nav class="slqs-event-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="{% url 'events:index' %}">Events</a> <span>/</span> Event details</nav>
+  <div class="eyebrow eyebrow-light"><span class="eyebrow-line"></span> {{ page.get_kind_display|upper }}</div>
+  <h1>{{ page.title }}</h1><p>{{ page.summary }}</p>
+  <div class="slqs-event-tags"><span>{{ page.start_at|date:'l, d F Y' }}</span><span>{{ page.get_venue_mode_display }}</span><span>{{ page.get_status_display }}</span></div>
+</div></section>
+{% if page.cover_image %}<div class="container slqs-event-detail-cover">{% image page.cover_image width-1500 as photo %}<img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ page.cover_image.title }}"></div>{% endif %}
+<section class="section slqs-event-detail-section"><div class="container slqs-event-detail-layout">
+  <article class="slqs-event-detail-content"><div class="eyebrow"><span class="eyebrow-line"></span> EVENT INFORMATION</div><h2 class="section-heading">About this <em>event.</em></h2><p class="slqs-event-lead">{{ page.summary }}</p>
+  {% if page.details %}<div class="slqs-event-programme">{% for block in page.details %}{% include_block block %}{% endfor %}</div>{% endif %}
+  <a class="slqs-event-text-link" href="{% url 'events:index' %}">← Back to all events</a></article>
+  <aside class="slqs-event-detail-side" aria-label="Event logistics">
+    <div class="slqs-event-info-box"><span class="eyebrow tiny-eyebrow">PLAN YOUR VISIT</span><h2>Event details</h2>
+      <dl><dt>Date</dt><dd>{{ page.start_at|date:'l, d F Y' }}</dd><dt>Time (Saudi Arabia)</dt><dd>{{ page.start_at|date:'g:i A' }} – {{ page.end_at|date:'g:i A' }}</dd><dt>Format</dt><dd>{{ page.get_venue_mode_display }}</dd>
+        {% if page.venue_name %}<dt>Venue</dt><dd>{{ page.venue_name }}</dd>{% endif %}{% if page.venue_address %}<dt>Address</dt><dd>{{ page.venue_address }}</dd>{% endif %}
+        {% if page.registration_deadline %}<dt>Registration deadline</dt><dd>{{ page.registration_deadline|date:'d M Y, g:i A' }}</dd>{% endif %}
+        {% if page.capacity %}<dt>Remaining places</dt><dd>{{ available_seats }}</dd>{% endif %}
+      </dl>
+      {% if can_register %}<a class="btn btn-gold slqs-register-btn" href="{% url 'events:register' page.slug %}">Register for this event ↗</a>
+      {% else %}<p class="slqs-event-closed" role="status">{{ registration_reason }}</p>{% endif %}
+      {% if page.contact_email %}<p class="slqs-event-inquiry">Questions? <a href="mailto:{{ page.contact_email }}">Email the organizers</a></p>{% endif %}
+    </div>
+  </aside>
+</div></section>
+{% endblock %}

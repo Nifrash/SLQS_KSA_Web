@@ -1,0 +1,30 @@
+{% extends 'membership_team/base.html' %}
+{% block title %}Import Existing Members{% endblock %}
+{% block main %}
+<div class="eyebrow">MEMBERSHIP OFFICE <span></span> DATA MIGRATION</div>
+<div class="page-heading"><div><h1>Existing Member Import</h1><p>Upload a Google Forms CSV / SLQS test XLSX, validate every record, and approve the import into SQLite. Nothing is changed during preview.</p></div></div>
+<section class="panel" style="padding:24px;margin-bottom:20px;max-width:960px">
+  <div class="panel-head"><h2>Step 1 — Preview the file</h2></div><p><strong>{{ legacy_total }}</strong> legacy records · <strong>{{ activation_total }}</strong> member accounts activated.</p>
+  <form method="post" enctype="multipart/form-data" style="display:grid;gap:16px">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div><label for="id_workbook">Choose Excel (.xlsx) or CSV (.csv)</label><br>{{ form.workbook }}<br><small>{{ form.workbook.help_text }}</small>{{ form.workbook.errors }}</div>
+    <div style="background:#fff8e6;padding:14px;border-radius:10px"><strong>Review safeguard:</strong> Google Forms responses are not proof of approved membership. Cross-check the Approved rows against the SLQS team’s official approval list before confirming. Records will not create login accounts or send OTPs automatically.</div>
+    <label>{{ form.confirm_approvals }} {{ form.confirm_approvals.label }}</label>{{ form.confirm_approvals.errors }}
+    <div style="display:flex;flex-wrap:wrap;gap:12px"><button class="btn btn-outline" type="submit" name="action" value="preview">Preview and validate</button><button class="btn btn-gold" type="submit" name="action" value="confirm">Confirm previously previewed file →</button></div>
+    <small>For confirmation, select the exact same file again, check the approval declaration, then click Confirm. File hashes must match; you cannot confirm without previewing first.</small>
+  </form>
+</section>
+{% if result %}
+<section class="panel" style="padding:24px;margin-bottom:20px">
+  <h2>Preview: {{ result.total }} records</h2>
+  <p><strong>{{ result.create }}</strong> new · <strong>{{ result.skip }}</strong> already imported · <strong>{{ result.errors }}</strong> records requiring attention.</p>
+  {% if result.errors %}<p style="color:#b42318"><strong>Import blocked:</strong> resolve errors in your worksheet and preview again.</p>{% else %}<p style="color:#136c3c"><strong>Valid preview:</strong> no changes have been saved yet. To import, upload this file again with the approval declaration checked.</p>{% endif %}
+  <div class="table-wrap"><table><thead><tr><th>Excel row</th><th>Member</th><th>Email</th><th>Legacy status</th><th>Action</th><th>Validation</th></tr></thead><tbody>
+    {% for row in result.rows %}<tr><td>{{ row.row }}</td><td>{{ row.name }}</td><td>{{ row.email }}</td><td>{{ row.status }}</td><td>{{ row.action }}</td><td>{% for err in row.errors %}<div style="color:#b42318">{{ err }}</div>{% empty %}<span style="color:#136c3c">OK</span>{% endfor %}{% for warning in row.warnings %}<div style="color:#98620f">{{ warning }}</div>{% endfor %}</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endif %}
+<section class="panel" style="padding:24px"><h2>Recent import history</h2><div class="table-wrap"><table><thead><tr><th>Date</th><th>Filename</th><th>Created</th><th>Skipped</th><th>Imported by</th></tr></thead><tbody>
+{% for batch in batches %}<tr><td>{{ batch.created_at|date:'d M Y H:i' }}</td><td>{{ batch.filename }}</td><td>{{ batch.created_count }}</td><td>{{ batch.skipped_count }}</td><td>{{ batch.uploaded_by.get_username|default:'Former staff' }}</td></tr>{% empty %}<tr><td colspan="5">No imports yet.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

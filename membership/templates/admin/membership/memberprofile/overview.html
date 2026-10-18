@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/member_admin.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-admin-intro">
+  <p class="slqs-admin-eyebrow">SLQS SAUDI ARABIA · MEMBERSHIP</p>
+  <h1>Member management</h1>
+  <p>Private records for approved members. Manage status, renewal dates and history from one place.</p>
+  <div class="slqs-admin-actions">
+    <a class="button" href="{% url 'admin:membership_memberprofile_changelist' %}">View all members</a>
+    <a class="button" href="{% url 'admin:membership_membershipapplication_changelist' %}">Review applications</a>
+  </div>
+</div>
+<div class="slqs-admin-stats">
+  <div><span>Total members</span><strong>{{ total }}</strong></div>
+  <div><span>Active</span><strong>{{ active }}</strong></div>
+  <div><span>Suspended</span><strong>{{ suspended }}</strong></div>
+  <div><span>Expired</span><strong>{{ expired }}</strong></div>
+  <div><span>Inactive</span><strong>{{ inactive }}</strong></div>
+  <div><span>Renewal due ≤30 days</span><strong>{{ due_soon }}</strong></div>
+  <div><span>No renewal date</span><strong>{{ without_due }}</strong></div>
+  <div><span>Applications awaiting decision</span><strong>{{ pending_applications }}</strong></div>
+</div>
+<div class="module slqs-admin-recent">
+  <h2>Recently enrolled members</h2>
+  <table><thead><tr><th>Membership no.</th><th>Member</th><th>Status</th><th>Renewal date</th></tr></thead>
+    <tbody>
+    {% for item in recent_members %}
+    <tr><td><a href="{% url 'admin:membership_memberprofile_change' item.pk %}">{{ item.membership_number }}</a></td>
+    <td>{{ item.application.full_name }}</td><td>{{ item.get_status_display }}</td><td>{{ item.renewal_due_on|default:"Not set" }}</td></tr>
+    {% empty %}<tr><td colspan="4">No members yet. Approve an application or synchronize earlier approvals.</td></tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

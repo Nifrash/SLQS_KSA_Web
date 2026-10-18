@@ -1,0 +1,7 @@
+{% load wagtailimages_tags %}
+<section class="slqs-section-v2 slqs-gallery-v2" aria-label="{{ value.title }}"><div class="container">
+  <div class="slqs-section-head-v2"><div>{% if value.eyebrow %}<div class="slqs-kicker"><span></span>{{ value.eyebrow }}</div>{% endif %}<h2>{{ value.title }}</h2></div>{% if value.description %}<p>{{ value.description }}</p>{% endif %}</div>
+  <div class="slqs-gallery-grid-v2">
+    {% for item in value.photos %}<figure class="slqs-gallery-item-v2">{% image item.image fill-750x560 loading="lazy" %}{% if item.caption %}<figcaption>{{ item.caption }}</figcaption>{% endif %}</figure>{% endfor %}
+  </div>
+</div></section>

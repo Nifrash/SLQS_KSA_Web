@@ -1,0 +1,5 @@
+{% load wagtailcore_tags %}
+<section class="cms-section cms-faq-section"><div class="container cms-narrow">
+  {% if value.title %}<h2 class="section-heading">{{ value.title }}</h2>{% endif %}
+  {% for item in value.items %}<details class="cms-faq-item"><summary>{{ item.question }}</summary><div class="cms-prose">{{ item.answer|richtext }}</div></details>{% endfor %}
+</div></section>

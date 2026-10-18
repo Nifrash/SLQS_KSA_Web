@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Verify SLQS Membership | SLQS Saudi Arabia{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex,nofollow,noarchive"><link rel="stylesheet" href="{% static 'css/digital_cards.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-public-check"><div class="container"><section class="slqs-verify-panel" aria-label="Digital membership card verification">
+  <span class="slqs-verify-emblem">SLQS<span>.</span></span>
+  <div class="slqs-verify-mark {% if valid %}is-valid{% else %}is-invalid{% endif %}" aria-hidden="true">{% if valid %}✓{% else %}×{% endif %}</div>
+  <span class="slqs-member-section-kicker">LIVE MEMBERSHIP VERIFICATION</span>
+  {% if valid %}<h1>Membership verified</h1><p>This digital card is valid as of the time shown below.</p>
+    <dl class="slqs-verify-details"><div><dt>Member name</dt><dd>{{ member.application.full_name }}</dd></div><div><dt>SLQS Membership No.</dt><dd>{{ member.membership_number }}</dd></div><div><dt>Current status</dt><dd>Active</dd></div><div><dt>Renewal due</dt><dd>{% if member.renewal_due_on %}{{ member.renewal_due_on|date:'d M Y' }}{% else %}Not assigned{% endif %}</dd></div></dl>
+  {% else %}<h1>Card not verified</h1><p>This QR code does not represent a currently valid digital membership card. It may have been replaced, revoked, or the associated membership is no longer active.</p>{% endif %}
+  <div class="slqs-verified-time">Checked: {{ checked_at|date:'d M Y, H:i' }} (Saudi Arabia time)</div>
+  <p class="slqs-verify-footnote">This page does not disclose private contact details or membership application documents. Verification reflects current SLQS records, not merely a printed card.</p>
+  <a class="slqs-verify-home" href="/">Visit SLQS KSA website →</a>
+</section></div></div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% load static %}
+<section class="slqs-section-v2 slqs-news-v2" aria-label="{{ value.title }}"><div class="container">
+  <div class="slqs-section-head-v2"><div>{% if value.eyebrow %}<div class="slqs-kicker"><span></span>{{ value.eyebrow }}</div>{% endif %}<h2>{{ value.title }}</h2></div><div class="slqs-news-side-v2">{% if value.description %}<p>{{ value.description }}</p>{% endif %}<a class="slqs-text-link-v2" href="/news/">Visit newsroom <span aria-hidden="true">↗</span></a></div></div>
+  {% if latest_news %}<div class="slqs-news-grid-v2">{% for article in latest_news %}{% include 'newsroom/includes/article_card.html' with article=article %}{% endfor %}</div>
+  {% else %}<div class="slqs-news-empty-v2"><div class="slqs-news-empty-mark" aria-hidden="true">SLQS<span>.</span></div><div><div class="slqs-kicker"><span></span>THE NEWSROOM</div><h3>Stories worth sharing.</h3><p>News and official announcements will appear here when published by SLQS.</p><a class="slqs-text-link-v2" href="/news/">Explore the newsroom <span aria-hidden="true">↗</span></a></div></div>{% endif %}
+</div></section>

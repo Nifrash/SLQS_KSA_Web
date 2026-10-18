@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static wagtailimages_tags %}
+{% block title %}{{ page.seo_title|default:page.title }} | SLQS Saudi Arabia{% endblock %}
+{% block meta_description %}{{ page.search_description|default:page.intro|truncatechars:155 }}{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker=page.eyebrow heading=page.title intro=page.intro %}
+{% if featured_article %}
+<section class="newsroom-feature-wrap" aria-label="Featured article">
+  <div class="container">
+    <article class="newsroom-feature">
+      <div class="newsroom-feature-visual">
+        {% if featured_article.featured_image %}
+          {% image featured_article.featured_image fill-1000x720 as picture %}
+          <img src="{{ picture.url }}" alt="{{ featured_article.featured_image.title }}" width="{{ picture.width }}" height="{{ picture.height }}">
+        {% else %}
+          <div class="newsroom-feature-art" aria-hidden="true"><span>SLQS.</span><strong>NEWS<br>&amp; IDEAS</strong></div>
+        {% endif %}
+      </div>
+      <div class="newsroom-feature-body">
+        <div class="eyebrow"><span class="eyebrow-line"></span> FEATURED STORY</div>
+        <div class="news-meta"><span>{{ featured_article.get_kind_display }}</span><span aria-hidden="true">·</span><time datetime="{{ featured_article.publish_date|date:'Y-m-d' }}">{{ featured_article.publish_date|date:'d M Y' }}</time></div>
+        <h2><a href="{{ featured_article.url }}">{{ featured_article.title }}</a></h2>
+        <p>{{ featured_article.excerpt }}</p>
+        <a class="btn btn-gold" href="{{ featured_article.url }}">Read featured article <span aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+{% endif %}
+<section class="section newsroom-listing" id="latest-news">
+  <div class="container">
+    <div class="newsroom-section-head">
+      <div><div class="eyebrow"><span class="eyebrow-line"></span> LATEST STORIES</div><h2 class="section-heading">News &amp; <em>insights.</em></h2></div>
+      <p>Discover the latest published updates from SLQS Saudi Arabia.</p>
+    </div>
+    <form method="get" action="{% url 'newsroom:index' %}" class="newsroom-filters" role="search" aria-label="Search and filter news">
+      <div class="news-filter-search"><label for="news-search">Search articles</label><input type="search" id="news-search" name="q" value="{{ search_query }}" maxlength="100" placeholder="Search titles, summaries or categories"></div>
+      <div class="news-filter-select"><label for="news-category">Category</label><select name="category" id="news-category"><option value="">All categories</option>{% for cat in categories %}<option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>{% endfor %}</select></div>
+      <div class="news-filter-select"><label for="news-type">Type</label><select name="type" id="news-type"><option value="">All types</option>{% for value,label in article_types %}<option value="{{ value }}" {% if selected_kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+      <div class="news-filter-actions"><button type="submit" class="btn btn-gold">Find stories <span aria-hidden="true">↗</span></button><a href="{% url 'newsroom:index' %}">Clear</a></div>
+    </form>
+    {% if articles_page.object_list %}
+      <div class="newsroom-grid">
+        {% for article in articles_page %}
+        {% include 'newsroom/includes/article_card.html' with article=article %}
+        {% endfor %}
+      </div>
+      {% if articles_page.paginator.num_pages > 1 %}
+      <nav class="newsroom-pagination" aria-label="News pages">
+        {% if articles_page.has_previous %}<a href="?q={{ search_query|urlencode }}&amp;category={{ selected_category|urlencode }}&amp;type={{ selected_kind|urlencode }}&amp;page={{ articles_page.previous_page_number }}">← Previous</a>{% endif %}
+        <span>Page {{ articles_page.number }} of {{ articles_page.paginator.num_pages }}</span>
+        {% if articles_page.has_next %}<a href="?q={{ search_query|urlencode }}&amp;category={{ selected_category|urlencode }}&amp;type={{ selected_kind|urlencode }}&amp;page={{ articles_page.next_page_number }}">Next →</a>{% endif %}
+      </nav>
+      {% endif %}
+    {% else %}
+      <div class="newsroom-empty" role="status"><div class="newsroom-empty-symbol" aria-hidden="true">✳</div>
+      {% if search_query or selected_category or selected_kind %}
+        <h3>No matching articles found</h3><p>Try a different search term, category or article type.</p><a class="text-link" href="{% url 'newsroom:index' %}">Show all news ↗</a>
+      {% elif featured_article %}
+        <h3>More stories coming soon</h3><p>Explore the featured announcement above while further updates are prepared.</p>
+      {% else %}
+        <div class="eyebrow tiny-eyebrow">NO ARTICLES PUBLISHED YET</div><h3>Good stories are coming.</h3><p>Official news and SLQS announcements will appear here once reviewed and published in the CMS.</p>
+      {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

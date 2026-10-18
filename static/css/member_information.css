@@ -1,0 +1,31 @@
+/* Phase 9 follow-up: private membership correspondence */
+.slqs-action-notice {background:#fff7de;border:1px solid #e9c56f;border-left:5px solid #b78d32;border-radius:16px;padding:24px 28px;margin:24px 0;color:#23394a}
+.slqs-action-notice-tag {font-size:.7rem;font-weight:800;letter-spacing:.12em;color:#806019}
+.slqs-action-notice h2{font-size:1.4rem;margin:9px 0}
+.slqs-action-notice p{max-width:760px;line-height:1.7}
+.slqs-action-notice .slqs-member-gold-button{display:inline-flex;margin-top:8px}
+.slqs-inbox-preview{margin:24px 0}
+.slqs-inbox-line {display:flex;gap:18px;justify-content:space-between;align-items:center;border-top:1px solid #e7ebed;padding:14px 0}
+.slqs-inbox-line p{font-size:.9rem;margin:4px 0;color:#5c6a74}
+.slqs-inbox-line small{color:#677784}
+.slqs-unread-count,.slqs-nav-count{display:inline-block;background:#f5dd9c;color:#4a3709;border-radius:999px;font-size:.68rem;font-weight:700;padding:3px 8px}
+.slqs-notification-screen,.slqs-request-card,.slqs-request-form-wrap{margin-top:20px}
+.slqs-notification-row{display:flex;gap:16px;align-items:flex-start;border-top:1px solid #e5ecf0;padding:23px 6px}
+.slqs-notification-row.is-unread{background:#f7fbff}
+.slqs-notification-symbol{height:38px;min-width:38px;border-radius:11px;background:#e8edf2;color:#173950;display:grid;place-items:center;font-weight:800}
+.slqs-notification-content{flex:1;min-width:0}
+.slqs-notification-content h3{font-size:1rem;margin:0 0 8px}
+.slqs-notification-content p{color:#4e606e;line-height:1.6}
+.slqs-notification-content small{color:#667786}
+.slqs-info-primary,.slqs-info-secondary{display:inline-block;text-decoration:none;border:0;border-radius:10px;padding:12px 19px;cursor:pointer;font-weight:700}
+.slqs-info-primary{background:#16354b;color:#fff}
+.slqs-info-secondary{background:#f0f3f5;color:#12354f;font-size:.82rem}
+.slqs-request-text{background:#f6f8fb;border-left:4px solid #c2a15d;padding:15px 18px;border-radius:6px;white-space:normal;line-height:1.7;margin:12px 0}
+.slqs-request-date{font-size:.83rem;color:#718190}
+.slqs-info-form{display:grid;gap:22px;max-width:750px;padding:14px 0}
+.slqs-info-form label{display:block;font-weight:700;margin-bottom:8px}
+.slqs-info-form textarea,.slqs-info-form input[type=file]{display:block;width:100%;max-width:100%;padding:12px;border:1px solid #cad4dc;border-radius:10px;background:#fff;font:inherit}
+.slqs-info-form small{display:block;margin-top:8px;color:#687885}
+.slqs-info-form .slqs-error,.slqs-info-errors{color:#a32a29}
+.slqs-evidence-success{color:#226947;font-weight:700}
+@media(max-width:700px){.slqs-notification-row{flex-wrap:wrap}.slqs-notification-row form{margin-left:55px}.slqs-action-notice{padding:18px}}

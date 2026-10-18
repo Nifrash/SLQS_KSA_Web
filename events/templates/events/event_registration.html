@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Event registration: {{ page.title }} | SLQS{% endblock %}
+{% block meta_description %}Register for an SLQS Saudi Arabia event.{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='EVENT REGISTRATION' heading='Reserve your place.' intro=page.title %}
+<section class="section slqs-registration-section"><div class="container slqs-registration-layout">
+  <div class="slqs-registration-panel"><div class="eyebrow"><span class="eyebrow-line"></span> FREE REGISTRATION</div><h2 class="section-heading">Your <em>details.</em></h2>
+    {% if not can_register %}<div class="slqs-event-closed" role="status"><strong>Registration unavailable.</strong> {{ registration_reason }}</div><p><a href="{% url 'events:detail' page.slug %}">← Return to the event</a></p>
+    {% else %}<p>Complete the form below. Required fields are marked with an asterisk (*).</p>
+      <form action="{% url 'events:register' page.slug %}" method="post" class="slqs-registration-form">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="slqs-field-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}<div class="slqs-field {% if field.errors %}slqs-field-invalid{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</label>
+          {{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          {% if field.errors %}<div class="slqs-field-errors" role="alert">{{ field.errors }}</div>{% endif %}
+          {% if field.name == 'consent' %}<small>See our <a href="{% url 'core:privacy' %}">privacy information</a>. SLQS will use this information only to manage and contact you about this event.</small>{% endif %}
+        </div>{% endfor %}
+        <button type="submit" class="btn btn-gold">Confirm registration <span aria-hidden="true">↗</span></button>
+      </form>
+    {% endif %}
+  </div>
+  <aside class="slqs-registration-summary"><span class="eyebrow tiny-eyebrow">YOUR EVENT</span><h2>{{ page.title }}</h2><p>{{ page.summary }}</p><dl><dt>Date</dt><dd>{{ page.start_at|date:'d M Y' }}</dd><dt>Time</dt><dd>{{ page.start_at|date:'g:i A' }} (Saudi Arabia)</dd><dt>Venue</dt><dd>{{ page.venue_name|default:page.get_venue_mode_display }}</dd></dl><a class="slqs-event-text-link" href="{% url 'events:detail' page.slug %}">← Event details</a></aside>
+</div></section>
+{% endblock %}

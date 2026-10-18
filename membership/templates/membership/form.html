@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% if is_update %}Update Membership Application{% else %}Membership Registration{% endif %} | SLQS KSA{% endblock %}
+{% block meta_description %}SLQS KSA membership application form for Sri Lankan quantity surveyors in Saudi Arabia.{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/membership.css' %}">{% endblock %}
+{% block content %}
+{% if is_update %}
+{% include 'core/_inner_hero.html' with kicker='MEMBERSHIP REVIEW' heading='Update your application.' intro='Please review your details, add the requested information and resubmit for SLQS review.' %}
+{% else %}
+{% include 'core/_inner_hero.html' with kicker='BECOME AN SLQS MEMBER' heading='Membership registration.' intro='Tell us about your professional background. All information is reviewed privately by SLQS KSA.' %}
+{% endif %}
+<section class="slqs-application-area"><div class="container slqs-application-grid">
+ <aside class="slqs-application-sidebar">
+  <div class="eyebrow"><span class="eyebrow-line"></span> APPLICATION GUIDE</div>
+  <h2>Before you begin</h2>
+  <p>Please prepare your professional qualifications, years of experience, KSA contact number and WhatsApp number.</p>
+  <div class="slqs-sidebar-steps"><span>01 <b>Personal details</b></span><span>02 <b>Professional details</b></span><span>03 <b>Qualifications &amp; experience</b></span><span>04 <b>Suggestions &amp; consent</b></span></div>
+  <div class="slqs-data-note"><strong>Your information stays private.</strong><p>Applications are visible to authorized membership administrators. We do not publish your birth date or phone numbers in a public directory.</p><a href="{% url 'core:privacy' %}">Read privacy information ↗</a></div>
+ </aside>
+ <div class="slqs-form-card">
+ <form method="post" class="slqs-membership-form" novalidate>
+ {% csrf_token %}{{ form.website }}
+ {% if form.non_field_errors %}<div class="slqs-form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+ <section class="slqs-form-section"><div class="slqs-section-title"><span>01</span><div><h2>Personal &amp; contact information</h2><p>How we can identify and contact you.</p></div></div>
+ <div class="slqs-form-fields two">{% include 'membership/_field.html' with field=form.full_name %}{% include 'membership/_field.html' with field=form.date_of_birth %}{% include 'membership/_field.html' with field=form.preferred_email %}{% include 'membership/_field.html' with field=form.ksa_phone %}{% include 'membership/_field.html' with field=form.whatsapp_phone %}</div>
+ <div class="slqs-choice-wrap"><fieldset><legend>{{ form.whatsapp_group_member.label }} <span class="slqs-required">*</span></legend><div class="slqs-choice-options">{{ form.whatsapp_group_member }}</div>{% for error in form.whatsapp_group_member.errors %}<small class="slqs-error">{{ error }}</small>{% endfor %}</fieldset></div>
+ </section>
+ <section class="slqs-form-section"><div class="slqs-section-title"><span>02</span><div><h2>Employment &amp; education</h2><p>Your current professional position and academic background.</p></div></div>
+ <div class="slqs-form-fields two">{% include 'membership/_field.html' with field=form.company_name %}{% include 'membership/_field.html' with field=form.job_title %}</div>
+ <div class="slqs-form-fields">{% include 'membership/_field.html' with field=form.highest_educational_qualification %}</div>
+ </section>
+ <section class="slqs-form-section"><div class="slqs-section-title"><span>03</span><div><h2>Professional qualifications &amp; experience</h2><p>Select qualifications that are currently active.</p></div></div>
+ <fieldset class="slqs-qualification-set"><legend>Professional Qualifications (Active as of date) <span class="slqs-required">*</span></legend><p class="slqs-help">Multiple selections allowed. Select “None” only if you hold none of the listed qualifications.</p><div class="slqs-qualification-grid">{{ form.professional_qualifications }}</div>{% for error in form.professional_qualifications.errors %}<small class="slqs-error">{{ error }}</small>{% endfor %}</fieldset>
+ <div class="slqs-form-fields">{% include 'membership/_field.html' with field=form.professional_qualifications_other %}</div>
+ <div class="slqs-form-fields two">{% include 'membership/_field.html' with field=form.overall_post_qualification_experience %}{% include 'membership/_field.html' with field=form.ksa_experience %}{% include 'membership/_field.html' with field=form.working_region %}</div>
+ </section>
+ <section class="slqs-form-section"><div class="slqs-section-title"><span>04</span><div><h2>Help us improve SLQS KSA</h2><p>We value suggestions that help our community grow.</p></div></div>
+ <div class="slqs-form-fields">{% include 'membership/_field.html' with field=form.suggestions %}</div>
+ <div class="slqs-consent"><label>{{ form.privacy_consent }}<span>{{ form.privacy_consent.label }} I have read the <a href="{% url 'core:privacy' %}" target="_blank" rel="noopener noreferrer">privacy information</a>.</span></label>{% for error in form.privacy_consent.errors %}<small class="slqs-error">{{ error }}</small>{% endfor %}</div>
+ <p class="slqs-submit-note">Required fields are marked *. Submission is subject to SLQS review and approval.</p>
+ <button type="submit" class="btn btn-dark slqs-submit-btn">{% if is_update %}Resubmit Application{% else %}Submit Membership Application{% endif %}<span aria-hidden="true">↗</span></button>
+ </section>
+ </form></div>
+</div></section>
+{% endblock %}

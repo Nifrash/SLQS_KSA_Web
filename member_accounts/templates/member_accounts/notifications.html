@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}My Notifications | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}"><link rel="stylesheet" href="{% static 'css/member_dashboard.css' %}"><link rel="stylesheet" href="{% static 'css/member_information.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-member-workspace"><div class="container slqs-member-frame">
+{% include 'member_accounts/_portal_sidebar.html' %}
+<div class="slqs-member-main"><div class="slqs-member-topbar"><div><span class="slqs-member-breadcrumb">Member portal / Notifications</span><h1>My notifications</h1></div></div>
+<section class="slqs-member-card slqs-notification-screen">
+  <div class="slqs-member-card-header"><div><span class="slqs-member-section-kicker">MEMBERSHIP UPDATES</span><h2>Committee messages {% if unread_notifications %}<span class="slqs-unread-count">{{ unread_notifications }} unread</span>{% endif %}</h2></div></div>
+  {% for item in notifications %}
+  <article class="slqs-notification-row {% if not item.read_at %}is-unread{% endif %}">
+    <div class="slqs-notification-symbol" aria-hidden="true">{% if item.kind == 'info_request' %}!{% elif item.kind == 'approved' %}✓{% else %}↗{% endif %}</div>
+    <div class="slqs-notification-content"><h3>{{ item.title }}</h3><p>{{ item.message|linebreaksbr }}</p><small>{{ item.created_at|date:'d M Y, H:i' }}</small>
+    {% if item.kind == 'info_request' and item.information_request_id and application.status == 'more_info' and not item.information_request.responded_at %}
+    <p><a href="{% url 'membership:respond' item.information_request_id %}" class="slqs-info-primary">Respond and upload document ↗</a></p>
+    {% endif %}</div>
+    {% if not item.read_at %}<form method="post" action="{% url 'member_accounts:read_notification' item.pk %}">{% csrf_token %}<button type="submit" class="slqs-info-secondary">Mark as read</button></form>{% endif %}
+  </article>
+  {% empty %}<p class="slqs-member-card-note">No notifications yet. Your membership committee's messages will appear here.</p>{% endfor %}
+</section></div></div></div>
+{% endblock %}

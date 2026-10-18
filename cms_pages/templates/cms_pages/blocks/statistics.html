@@ -1,0 +1,4 @@
+<section class="cms-section cms-stats-section"><div class="container">
+  {% if value.title %}<h2 class="section-heading">{{ value.title }}</h2>{% endif %}
+  <div class="cms-stat-grid">{% for stat in value.stats %}<div class="cms-stat"><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></div>{% endfor %}</div>
+</div></section>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}Submit Additional Information | SLQS KSA{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/member_portal.css' %}"><link rel="stylesheet" href="{% static 'css/member_dashboard.css' %}"><link rel="stylesheet" href="{% static 'css/member_information.css' %}">{% endblock %}
+{% block content %}
+<div class="slqs-member-workspace"><div class="container slqs-member-frame">
+{% include 'member_accounts/_portal_sidebar.html' %}
+<div class="slqs-member-main"><div class="slqs-member-topbar"><div><span class="slqs-member-breadcrumb">Member portal / Membership review</span><h1>Additional information</h1></div><a href="{% url 'member_accounts:dashboard' %}" class="slqs-info-secondary">Back to dashboard</a></div>
+<section class="slqs-member-card slqs-request-card"><span class="slqs-member-section-kicker">REQUEST FROM SLQS MEMBERSHIP COMMITTEE</span><h2>Supporting document required</h2><p class="slqs-request-text">{{ info.message|linebreaksbr }}</p><p class="slqs-request-date">Requested: {{ info.requested_at|date:'d M Y, H:i' }} · Application {{ application.short_reference }}</p></section>
+<section class="slqs-member-card slqs-request-form-wrap">
+{% if open_request %}
+<h2>Send your response</h2><p>Attach a document that supports the committee's request. The file is stored privately and can only be viewed by you or authorized committee staff.</p>
+<form method="post" enctype="multipart/form-data" class="slqs-info-form" novalidate>{% csrf_token %}
+{% if form.non_field_errors %}<div class="slqs-info-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+<div><label for="{{ form.message.id_for_label }}">{{ form.message.label }} *</label>{{ form.message }}{% for error in form.message.errors %}<small class="slqs-error">{{ error }}</small>{% endfor %}</div>
+<div><label for="{{ form.document.id_for_label }}">{{ form.document.label }} *</label>{{ form.document }}<small>{{ form.document.help_text }}</small>{% for error in form.document.errors %}<small class="slqs-error">{{ error }}</small>{% endfor %}</div>
+<button type="submit" class="slqs-info-primary">Submit to membership committee ↗</button></form>
+{% else %}
+<h2>Response recorded</h2><p>Your response has already been submitted or the committee has closed this request.</p>
+{% if previous %}<p><strong>Your message:</strong> {{ previous.message|linebreaksbr }}</p><p><a href="{% url 'membership:document_download' previous.pk %}" class="slqs-info-secondary">Download submitted document</a></p>{% endif %}
+{% endif %}
+</section></div></div></div>
+{% endblock %}

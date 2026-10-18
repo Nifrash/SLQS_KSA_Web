@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SLQS mark">
+<rect width="64" height="64" fill="#0d2637"/>
+<path d="M32 6 57 20v24L32 58 7 44V20z" fill="none" stroke="#d5b477" stroke-width="1.2"/>
+<path d="m12 42 20-29 20 29M20 44h24M25 36h14M32 13v32" fill="none" stroke="#d5b477" stroke-width="1.7" stroke-linecap="round"/>
+<circle cx="32" cy="13" r="2.6" fill="#f0d6aa"/>
+</svg>

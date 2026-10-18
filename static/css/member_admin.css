@@ -1,0 +1,11 @@
+.slqs-admin-intro{padding:26px 28px;margin-bottom:20px;border-radius:12px;background:#0b2138;color:#f5f7fa}
+.slqs-admin-intro h1{font-size:28px;font-weight:700;color:#fff;margin:4px 0 8px}
+.slqs-admin-intro p{color:#d7e0eb;margin:0 0 14px}
+.slqs-admin-intro .slqs-admin-eyebrow{font-size:11px;letter-spacing:.13em;color:#f0cb83;font-weight:700}
+.slqs-admin-actions{display:flex;gap:10px;flex-wrap:wrap}
+.slqs-admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:25px}
+.slqs-admin-stats>div{padding:20px;border:1px solid var(--hairline-color,#d6d9df);border-radius:10px;background:var(--body-bg,#fff)}
+.slqs-admin-stats span{display:block;font-size:13px;opacity:.8;margin-bottom:8px}
+.slqs-admin-stats strong{font-size:28px;font-weight:750}
+.slqs-admin-recent{overflow-x:auto}.slqs-admin-recent h2{padding:15px}
+.slqs-admin-recent table{width:100%}

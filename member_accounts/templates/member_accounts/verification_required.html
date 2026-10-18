@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Verified SLQS Account Required{% endblock %}
+{% block content %}<section class="section"><div class="container" style="max-width:760px"><h1>Verified member account required</h1><p>Only email-verified SLQS website accounts can access membership applications and the member dashboard.</p><p><a href="{% url 'member_accounts:register' %}">Register an account</a> or <a href="{% url 'member_accounts:login' %}">sign in</a>.</p></div></section>{% endblock %}

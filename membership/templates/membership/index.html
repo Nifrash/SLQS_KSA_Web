@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}SLQS Membership | Apply to Join{% endblock %}
+{% block meta_description %}Join the Sri Lankan Quantity Surveyors community in Saudi Arabia. Apply for SLQS KSA membership online.{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/membership.css' %}">{% endblock %}
+{% block content %}
+{% include 'core/_inner_hero.html' with kicker='SLQS PROFESSIONAL COMMUNITY' heading='Your professional network starts here.' intro='Connect, contribute and grow with Sri Lankan quantity surveying professionals across Saudi Arabia.' %}
+<section class="section slqs-member-intro">
+  <div class="container slqs-intro-grid">
+    <div><div class="eyebrow"><span class="eyebrow-line"></span> JOIN THE COMMUNITY</div>
+      <h2 class="section-heading">Build connections.<br><em>Share expertise.</em></h2>
+      <p>Apply to become part of the SLQS KSA professional community. Our team will review your application and contact you using your preferred email address.</p>
+      <a class="btn btn-dark" href="{% if request.user.is_authenticated %}{% url 'member_accounts:dashboard' %}{% else %}{% url 'member_accounts:register' %}{% endif %}">{% if request.user.is_authenticated %}Member Dashboard{% else %}Register &amp; Apply{% endif %} <span aria-hidden="true">↗</span></a>
+    </div>
+    <aside class="slqs-benefits-panel" aria-label="Membership benefits">
+      <h3>What participation offers</h3>
+      <div><b>01</b><span>Professional networking across the Kingdom</span></div>
+      <div><b>02</b><span>Access to SLQS activities and event announcements</span></div>
+      <div><b>03</b><span>Knowledge sharing and opportunities to contribute</span></div>
+      <p>Applications are reviewed by SLQS. Submission does not automatically grant membership.</p>
+    </aside>
+  </div>
+</section>
+<section class="slqs-process-band"><div class="container">
+  <div class="eyebrow eyebrow-light"><span class="eyebrow-line"></span> SIMPLE APPLICATION PROCESS</div>
+  <div class="slqs-process-grid"><div><strong>01</strong><h3>Register &amp; activate email</h3><p>Verify your email with a six-digit OTP, then complete your application.</p></div><div><strong>02</strong><h3>Committee review</h3><p>SLQS reviews the application and may request more information.</p></div><div><strong>03</strong><h3>Receive a decision</h3><p>We contact you by email with the membership decision.</p></div></div>
+</div></section>
+{% endblock %}
